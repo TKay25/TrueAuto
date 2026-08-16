@@ -62,6 +62,9 @@
         </div>
       </div>
     </div>
+    <div class="text-center pb-1 reveal">
+      <a href="#featured" class="hero-scroll"><i class="bi bi-mouse"></i> Scroll to explore</a>
+    </div>
   </div>
 </section>
 
@@ -90,7 +93,7 @@
 </section>
 
 <!-- ===================== FEATURED CARS ===================== -->
-<section class="py-5">
+<section id="featured" class="py-5">
   <div class="container">
     <div class="d-flex justify-content-between align-items-end mb-4 reveal">
       <div>
@@ -200,7 +203,7 @@
           <div class="testimonial-stars mb-2">★★★★★</div>
           <p class="mb-3">"I watched my Harrier go from a Tokyo auction to my driveway in Harare. Every receipt, every stage. My first car bought without anxiety."</p>
           <div class="d-flex align-items-center gap-2">
-            <div class="avatar-circle" style="background:#0B3B2E;">T</div>
+            <div class="avatar-circle" style="background:#14244A;">T</div>
             <div><strong class="d-block small">T. Moyo</strong><small class="text-muted">Harare · Toyota Harrier</small></div>
           </div>
         </div>
@@ -281,13 +284,12 @@
   .hero-float-note {
     margin-top: 1rem;
     display: inline-flex; align-items: center; gap: 0.5rem;
-    background: rgba(61, 220, 132, 0.12);
-    border: 1px solid rgba(61, 220, 132, 0.3);
-    color: #7fe8ab;
+    background: rgba(220, 20, 60, 0.14);
+    border: 1px solid rgba(220, 20, 60, 0.4);
+    color: #f2a6b8;
     font-size: 0.82rem;
     border-radius: 50rem;
     padding: 0.5rem 1rem;
-    backdrop-filter: blur(6px);
   }
   .avatar-circle {
     width: 38px; height: 38px; border-radius: 50%;
@@ -313,7 +315,7 @@
               <div class="testimonial-stars mb-2">${"★".repeat(r.rating)}${"☆".repeat(Math.max(5 - r.rating, 0))}</div>
               <p class="mb-3">"${escapeHtml(r.comment)}"</p>
               <div class="d-flex align-items-center gap-2">
-                <div class="avatar-circle" style="background:#0B3B2E;">${escapeHtml((r.customer || "T")[0])}</div>
+                <div class="avatar-circle" style="background:#14244A;">${escapeHtml((r.customer || "T")[0])}</div>
                 <div><strong class="d-block small">${escapeHtml(r.customer)}</strong><small class="text-muted">${escapeHtml(r.vehicle)} · verified buyer</small></div>
               </div>
             </div>

@@ -16,13 +16,13 @@
     <div class="row g-3 mb-4">
       {% for label, val, icon, color in [
         ("Total vehicles", stats.vehicles, "bi-car-front", "rgba(192,16,46,0.1)"),
-        ("Available", stats.available, "bi-check-circle", "rgba(10,46,30,0.1)"),
+        ("Available", stats.available, "bi-check-circle", "rgba(10,20,40,0.08)"),
         ("Reserved", stats.reserved, "bi-clock-history", "rgba(11,27,51,0.1)"),
-        ("Sold", stats.sold, "bi-trophy", "rgba(255,193,7,0.15)"),
+        ("Sold", stats.sold, "bi-trophy", "rgba(220,20,60,0.12)"),
         ("Orders", stats.orders, "bi-bag", "rgba(192,16,46,0.1)"),
-        ("In transit", stats.in_transit, "bi-truck", "rgba(10,46,30,0.1)"),
+        ("In transit", stats.in_transit, "bi-truck", "rgba(10,20,40,0.08)"),
         ("Customers", stats.customers, "bi-people", "rgba(11,27,51,0.1)"),
-        ("Pending payments", stats.pending_payments, "bi-hourglass-split", "rgba(255,193,7,0.15)"),
+        ("Pending payments", stats.pending_payments, "bi-hourglass-split", "rgba(220,20,60,0.12)"),
       ] %}
       <div class="col-6 col-md-3">
         <div class="stat-tile p-3">

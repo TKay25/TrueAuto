@@ -4,51 +4,54 @@
    ========================================================================== */
 
 :root {
-  /* Globally-regarded premium mix — navy + amber + teal. All SOLID colors. */
-  --navy:       #14213D;   /* primary brand — trust & depth */
-  --navy-2:     #1D2D50;
-  --navy-3:     #2C3E6B;
-  --ink:        #0B1120;   /* near-black for dark surfaces (hero, nav, footer) */
-  --amber:      #FCA311;   /* CTA accent — the famous goldenrod */
-  --amber-2:    #D97706;   /* readable deep amber for text accents */
-  --amber-3:    #B45309;
-  --teal:       #0F766E;   /* success / secondary */
-  --teal-2:     #14B8A6;
-  --red:        #E63946;   /* errors only */
-  --white:      #FFFFFF;
-  --grey-50:    #F7F8FA;
-  --grey-100:   #EEF1F5;
-  --grey-200:   #E2E7EE;
-  --grey-400:   #9AA6B2;
-  --grey-600:   #5B6675;
-  --grey-800:   #1F2937;
+  /* Two-tone theme — ONLY crimson + deep dark blue (+ neutral white/greys/black) */
+  --crimson:       #DC143C;   /* primary accent */
+  --crimson-soft:  #E6496B;   /* lighter crimson (text on dark, secondary accent) */
+  --crimson-dark:  #A50D2F;
+  --orange:        #F97316;   /* button orange (solid) */
+  --orange-dark:   #EA580C;
+  --orange-soft:   #FB923C;
+  --deep-blue:     #070D1A;   /* near-black blue */
+  --deep-blue-2:   #0A1428;   /* deep dark blue (primary dark) */
+  --deep-blue-3:   #14244A;   /* lighter deep blue */
+  --ink:           #070D1A;
+  --navy:          #0A1428;
+  --navy-2:        #0A1428;
+  --navy-3:        #14244A;
+  --red:           #A50D2F;
+  --white:         #FFFFFF;
+  --grey-50:       #F7F8FA;
+  --grey-100:      #EEF1F5;
+  --grey-200:      #E2E7EE;
+  --grey-400:      #9AA6B2;
+  --grey-600:      #5B6675;
+  --grey-800:      #1F2937;
 
-  /* Back-compat aliases — every existing template keeps working */
-  --crimson:       var(--amber-3);   /* text-accent base (readable) */
-  --crimson-soft:  var(--amber-2);
-  --crimson-dark:  var(--amber-3);
-  --deep-blue:     var(--ink);
-  --deep-blue-2:   var(--navy);
-  --deep-blue-3:   var(--navy-3);
-  --deep-green:    var(--teal);
-  --deep-green-2:  var(--teal);
-  --emerald:       var(--teal-2);
-  --gold:          var(--amber);
-  --gold-soft:     #FFD166;
+  /* Legacy aliases → crimson / deep blue (keeps every template working) */
+  --amber:         var(--crimson);
+  --amber-2:       var(--crimson-soft);
+  --amber-3:       var(--crimson-dark);
+  --gold:          var(--crimson);
+  --gold-soft:     var(--crimson-soft);
+  --teal:          var(--deep-blue-3);
+  --teal-2:        var(--deep-blue-3);
+  --emerald:       var(--deep-blue-3);
+  --deep-green:    var(--deep-blue-2);
+  --deep-green-2:  var(--deep-blue-2);
 
-  /* All former gradients are now SOLID colors */
-  --grad-hero:    var(--ink);
-  --grad-accent:  var(--amber);
-  --grad-deep:    var(--navy);
-  --grad-gold:    var(--amber);
-  --grad-success: var(--teal);
+  /* Former gradients → solid colors */
+  --grad-hero:    var(--deep-blue);
+  --grad-accent:  var(--crimson);
+  --grad-deep:    var(--deep-blue-2);
+  --grad-gold:    var(--crimson);
+  --grad-success: var(--deep-blue-2);
 
-  --shadow-xs: 0 1px 2px rgba(20, 33, 61, 0.06);
-  --shadow-sm: 0 3px 12px rgba(20, 33, 61, 0.08);
-  --shadow-md: 0 12px 34px rgba(20, 33, 61, 0.14);
-  --shadow-lg: 0 28px 60px rgba(20, 33, 61, 0.22);
-  --shadow-crimson: 0 10px 24px rgba(252, 163, 17, 0.4);
-  --shadow-gold: 0 10px 22px rgba(252, 163, 17, 0.4);
+  --shadow-xs: 0 1px 2px rgba(10, 20, 40, 0.06);
+  --shadow-sm: 0 3px 12px rgba(10, 20, 40, 0.08);
+  --shadow-md: 0 12px 34px rgba(10, 20, 40, 0.14);
+  --shadow-lg: 0 28px 60px rgba(10, 20, 40, 0.22);
+  --shadow-crimson: 0 10px 24px rgba(220, 20, 60, 0.4);
+  --shadow-gold: 0 10px 22px rgba(220, 20, 60, 0.4);
   --radius: 18px;
   --radius-sm: 12px;
 }
@@ -87,12 +90,12 @@ body {
 /* ---------- Buttons ---------- */
 .btn { font-weight: 600; letter-spacing: 0.01em; }
 .btn-accent {
-  background: var(--amber);
-  color: var(--navy); border: none; font-weight: 800;
-  box-shadow: var(--shadow-crimson);
+  background: var(--orange);
+  color: #000; border: none; font-weight: 800;
+  box-shadow: 0 10px 24px rgba(249, 115, 22, 0.35);
   transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
 }
-.btn-accent:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(252,163,17,0.5); filter: brightness(1.05); color: var(--navy); }
+.btn-accent:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(249, 115, 22, 0.45); filter: brightness(1.06); color: #000; }
 .btn-brand {
   background: var(--grad-deep); color: #fff; border: none; font-weight: 700;
   box-shadow: 0 10px 24px rgba(11, 27, 51, 0.35);
@@ -124,8 +127,8 @@ body {
   width: 38px; height: 38px;
   display: inline-flex; align-items: center; justify-content: center;
   border-radius: 12px;
-  background: var(--amber);
-  color: var(--navy); font-size: 1.15rem;
+  background: var(--crimson);
+  color: #fff; font-size: 1.15rem;
   box-shadow: var(--shadow-crimson);
 }
 
@@ -218,10 +221,10 @@ body {
 .status-sold      { background: var(--grey-400); color: #fff; }
 .status-pending   { background: var(--deep-blue-3); color: #fff; }
 .status-verified  { background: var(--deep-green); color: #fff; }
-.status-shipping  { background: var(--amber); color: var(--navy); }
+.status-shipping  { background: var(--crimson); color: #fff; }
 .grade-badge {
-  background: rgba(6, 13, 26, 0.82);
-  color: #FFD166;
+  background: rgba(10, 20, 40, 0.85);
+  color: var(--crimson-soft);
   font-weight: 800;
   border-radius: 50rem;
   backdrop-filter: blur(4px);
@@ -249,8 +252,8 @@ body {
   margin: 0 auto;
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
-  background: var(--amber);
-  color: var(--navy); font-weight: 900; font-size: 1.3rem;
+  background: var(--crimson);
+  color: #fff; font-weight: 900; font-size: 1.3rem;
   box-shadow: var(--shadow-crimson);
 }
 
@@ -258,7 +261,7 @@ body {
 .timeline-simple { display: flex; flex-direction: column; gap: 0.85rem; }
 .tl-item { display: flex; align-items: center; gap: 0.7rem; color: rgba(255, 255, 255, 0.55); font-size: 0.92rem; }
 .tl-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.3); flex-shrink: 0; }
-.tl-item.done .tl-dot { background: var(--emerald); border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(61,220,132,0.18); }
+.tl-item.done .tl-dot { background: #fff; border-color: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.18); }
 .tl-item.done { color: rgba(255, 255, 255, 0.82); }
 .tl-item.active .tl-dot { background: var(--crimson-soft); border-color: var(--crimson-soft); animation: pulse 1.6s infinite; }
 .tl-item.active { color: #fff; font-weight: 700; }
@@ -300,10 +303,10 @@ body {
 .chat-fab {
   position: fixed; bottom: 24px; right: 24px; z-index: 1080;
   width: 62px; height: 62px; border-radius: 50%;
-  background: var(--amber); color: var(--navy);
+  background: var(--orange); color: #000;
   display: flex; align-items: center; justify-content: center;
   font-size: 1.65rem;
-  box-shadow: var(--shadow-crimson);
+  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.45);
   cursor: pointer; border: none;
   transition: transform 0.16s ease;
 }
@@ -328,7 +331,7 @@ body {
   box-shadow: 0 6px 14px rgba(192,16,46,0.4);
 }
 .chat-online { font-size: 0.72rem; color: rgba(255,255,255,0.75); }
-.online-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--emerald); margin-right: 4px; animation: blink 1.4s infinite; }
+.online-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--crimson-soft); margin-right: 4px; animation: blink 1.4s infinite; }
 @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 .chat-body { flex: 1; overflow-y: auto; background: var(--grey-50); padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
 .chat-msg { max-width: 85%; padding: 0.65rem 0.9rem; border-radius: 15px; font-size: 0.88rem; white-space: pre-wrap; word-break: break-word; animation: msgIn 0.2s ease; }
@@ -410,7 +413,7 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .testimonial-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-.testimonial-stars { color: #F4A300; letter-spacing: 2px; }
+.testimonial-stars { color: var(--crimson); letter-spacing: 2px; }
 .faq-item {
   border: 1px solid var(--grey-200) !important;
   border-radius: var(--radius-sm) !important;
@@ -476,7 +479,7 @@ body {
   box-shadow: 0 6px 16px rgba(20, 33, 61, 0.3);
 }
 .app-tab.admin-tab { color: var(--amber-3); }
-.app-tab.admin-tab:hover { background: rgba(252, 163, 17, 0.12); }
+.app-tab.admin-tab:hover { background: rgba(220, 20, 60, 0.12); }
 .app-tab.admin-tab.active { background: var(--teal); color: #fff; }
 .app-view { animation: appFade 0.24s ease; }
 @keyframes appFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
@@ -506,8 +509,8 @@ body {
   position: absolute; top: -4px; right: -4px;
   min-width: 19px; height: 19px; padding: 0 5px;
   border-radius: 50rem;
-  background: var(--amber);
-  color: var(--navy); font-size: 0.66rem; font-weight: 800;
+  background: var(--crimson);
+  color: #fff; font-size: 0.66rem; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
   border: 2px solid var(--deep-blue);
   animation: pulse 1.6s infinite;
@@ -572,7 +575,7 @@ body {
   transition: all 0.16s ease;
 }
 .wish-btn:hover { transform: scale(1.12); color: var(--crimson); }
-.wish-btn.active { background: var(--amber); color: var(--navy); box-shadow: var(--shadow-crimson); }
+.wish-btn.active { background: var(--crimson); color: #fff; box-shadow: var(--shadow-crimson); }
 .cmp-btn {
   border: 1px solid var(--grey-200); background: #fff;
   color: var(--grey-600); font-size: 0.68rem; font-weight: 700;
@@ -618,7 +621,7 @@ body {
 }
 .staff-link:hover { color: rgba(255, 255, 255, 0.7); }
 .staff-pill {
-  background: var(--amber); color: var(--navy); font-weight: 800;
+  background: var(--crimson); color: #fff; font-weight: 800;
   font-size: 0.7rem; letter-spacing: 0.04em; border-radius: 50rem;
 }
 .star-btn {
@@ -636,15 +639,15 @@ body {
 .route-btn:hover { border-color: var(--deep-blue-2); color: var(--deep-blue-2); }
 .route-btn.active { background: var(--deep-green); border-color: var(--deep-green); color: #fff; }
 .btn-gold {
-  background: var(--grad-gold); color: #1F2733; border: none; font-weight: 800;
-  box-shadow: var(--shadow-gold);
+  background: var(--orange); color: #000; border: none; font-weight: 800;
+  box-shadow: 0 10px 22px rgba(249, 115, 22, 0.35);
   transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
 }
-.btn-gold:hover { transform: translateY(-2px); filter: brightness(1.05); color: #1F2733; }
+.btn-gold:hover { transform: translateY(-2px); filter: brightness(1.06); color: #000; }
 .grade-badge { color: var(--gold-soft); }
 .status-available { background: var(--grad-success); }
 .featured-ring { border: 2px solid rgba(245, 179, 1, 0.55); }
-.badge-gold { background: var(--grad-gold); color: #1F2733; font-weight: 800; }
+.badge-gold { background: var(--grad-gold); color: #fff; font-weight: 800; }
 
 /* Navigation — bigger touch targets, clearer active state */
 .brand-nav .nav-link { font-weight: 600; }
@@ -687,3 +690,231 @@ body {
 
 /* Reduced motion already handled above; add smooth scrolling for anchors */
 .breadcrumb a, .footer-link { text-decoration: none; }
+
+/* ---------- Bootstrap semantic colors remapped to crimson + deep dark blue ---------- */
+.text-success { color: var(--deep-blue-2) !important; }
+.btn-success { background: var(--deep-blue-2) !important; border-color: var(--deep-blue-2) !important; color: #fff !important; }
+.btn-success:hover, .btn-success:focus { background: var(--deep-blue-3) !important; border-color: var(--deep-blue-3) !important; color: #fff !important; }
+.btn-outline-success { color: var(--deep-blue-2) !important; border-color: var(--deep-blue-2) !important; }
+.btn-outline-success:hover { background: var(--deep-blue-2) !important; color: #fff !important; }
+.bg-success, .progress-bar.bg-success, .badge-success { background: var(--deep-blue-2) !important; color: #fff !important; }
+.text-warning { color: var(--crimson-soft) !important; }
+.badge-warning { background: var(--crimson) !important; color: #fff !important; }
+.bg-warning, .alert-warning {
+  background: rgba(220, 20, 60, 0.12) !important;
+  border-color: rgba(220, 20, 60, 0.35) !important;
+  color: #f2a6b8 !important;
+}
+.text-danger { color: var(--crimson) !important; }
+.btn-danger { background: var(--crimson) !important; border-color: var(--crimson) !important; color: #fff !important; }
+.btn-danger:hover, .btn-danger:focus { background: var(--crimson-dark) !important; border-color: var(--crimson-dark) !important; color: #fff !important; }
+.btn-outline-danger { color: var(--crimson) !important; border-color: var(--crimson) !important; }
+.btn-outline-danger:hover { background: var(--crimson) !important; border-color: var(--crimson) !important; color: #fff !important; }
+.bg-danger, .badge-danger { background: var(--crimson) !important; color: #fff !important; }
+.text-info, .text-primary { color: var(--deep-blue-2) !important; }
+.badge-info, .badge-primary { background: var(--deep-blue-3) !important; color: #fff !important; }
+.btn-info, .btn-primary { background: var(--orange) !important; border-color: var(--orange) !important; color: #000 !important; }
+.btn-info:hover, .btn-primary:hover { background: var(--orange-dark) !important; border-color: var(--orange-dark) !important; color: #000 !important; }
+.form-check-input:checked { background-color: var(--crimson); border-color: var(--crimson); }
+
+/* ==========================================================================
+   WORLD-CLASS POLISH — typography, elevation, motion, focus (locked palette)
+   ========================================================================== */
+
+/* --- Type & rhythm --- */
+body { font-variant-numeric: tabular-nums; }
+h1, h2, h3, h4, h5, h6, .fw-black, .display-1, .display-2, .display-3, .display-4, .display-5, .display-6 { letter-spacing: -0.022em; }
+.lead { letter-spacing: -0.004em; }
+
+/* --- Keyboard focus rings --- */
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; border-radius: 8px; }
+
+/* --- Buttons --- */
+.btn { position: relative; }
+.btn:active { transform: translateY(1px) scale(0.99); }
+.btn-accent {
+  box-shadow: 0 4px 12px rgba(249,115,22,0.28), 0 14px 30px rgba(249,115,22,0.22);
+}
+.btn-accent:hover { box-shadow: 0 6px 16px rgba(249,115,22,0.34), 0 20px 40px rgba(249,115,22,0.26); }
+.btn-brand { box-shadow: 0 4px 12px rgba(10,20,40,0.25), 0 14px 30px rgba(10,20,40,0.18); }
+.btn-brand:hover { box-shadow: 0 6px 16px rgba(10,20,40,0.3), 0 20px 40px rgba(10,20,40,0.22); }
+.btn-outline-light {
+  border: 1.5px solid rgba(255,255,255,0.65);
+  color: #fff;
+  transition: all 0.18s ease;
+}
+.btn-outline-light:hover { background: #fff; color: var(--deep-blue-2); border-color: #fff; }
+.btn-outline-brand { border-width: 1.5px; }
+.btn-gold { box-shadow: 0 4px 12px rgba(249,115,22,0.3), 0 14px 28px rgba(249,115,22,0.2); }
+
+/* --- Navbar (premium glass) --- */
+.brand-nav {
+  background: rgba(7, 13, 26, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.brand-nav::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--crimson);
+}
+.brand-nav .nav-link {
+  position: relative; font-weight: 600; color: rgba(255,255,255,0.78);
+}
+.brand-nav .nav-link::after {
+  content: ""; position: absolute; left: 50%; bottom: 3px;
+  width: 0; height: 2px; background: var(--crimson-soft);
+  border-radius: 2px; transform: translateX(-50%);
+  transition: width 0.2s ease;
+}
+.brand-nav .nav-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+.brand-nav .nav-link:hover::after { width: 55%; }
+.brand-badge {
+  box-shadow: 0 0 0 1px rgba(220,20,60,0.45), 0 8px 18px rgba(220,20,60,0.35);
+}
+
+/* --- Hero & page hero (decorative solid rings, no gradients) --- */
+.hero::before {
+  content: ""; position: absolute; top: -220px; right: -140px;
+  width: 640px; height: 640px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.hero::after {
+  content: ""; position: absolute; bottom: -170px; left: 4%;
+  width: 430px; height: 430px; border-radius: 50%;
+  border: 1px solid rgba(220,20,60,0.16);
+}
+.page-hero::after {
+  content: ""; position: absolute; top: -160px; right: -120px;
+  width: 480px; height: 480px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.hero-badge {
+  background: rgba(220,20,60,0.13);
+  border-color: rgba(220,20,60,0.45);
+  box-shadow: 0 0 0 4px rgba(220,20,60,0.05);
+}
+.hero-stats > div {
+  border-radius: 16px; padding: 0.85rem 1.15rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.hero-card {
+  border-radius: 26px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 30px 70px rgba(6,13,26,0.45);
+}
+.makes-marquee:hover .makes-track { animation-play-state: paused; }
+.makes-pill { transition: background 0.15s ease, transform 0.15s ease; }
+.makes-pill:hover { background: rgba(255,255,255,0.1); transform: translateY(-1px); }
+
+/* --- Section kickers --- */
+.section-kicker { font-size: 0.7rem; letter-spacing: 0.18em; }
+.section-kicker::before { width: 26px; height: 2px; }
+
+/* --- Cards --- */
+.card { border-radius: 16px; border-color: var(--grey-200); }
+.vehicle-card { border-radius: 20px; }
+.vehicle-card:hover {
+  border-color: rgba(220,20,60,0.35);
+  box-shadow: 0 22px 44px rgba(10,20,40,0.12), 0 6px 18px rgba(10,20,40,0.06);
+}
+.vehicle-img { height: 215px; }
+.vehicle-img img { transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.vehicle-card:hover .vehicle-img img { transform: scale(1.07); }
+.card .price { font-size: 1.06rem; letter-spacing: -0.01em; }
+.step-card, .testimonial-card { border-radius: 20px; }
+.step-card:hover, .testimonial-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 36px rgba(10,20,40,0.1), 0 4px 14px rgba(10,20,40,0.06);
+}
+.step-num { width: 56px; height: 56px; font-size: 1.35rem; box-shadow: 0 8px 20px rgba(220,20,60,0.32); }
+.stat-tile { border-radius: 18px; }
+.stat-tile::after { height: 3px; }
+.stat-tile:hover { transform: translateY(-5px); }
+
+/* --- Forms --- */
+.form-control, .form-select {
+  border-radius: 14px; padding: 0.7rem 1rem;
+  border-color: var(--grey-200);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.form-control:hover, .form-select:hover { border-color: var(--grey-400); }
+.form-control:focus, .form-select:focus {
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 0.25rem rgba(220,20,60,0.1);
+  background: #fff;
+}
+.form-label { font-weight: 600; font-size: 0.86rem; color: var(--grey-600); }
+.input-group-text { border-radius: 14px !important; }
+.auth-card { border-radius: 26px; }
+
+/* --- Tables --- */
+.table { --bs-table-hover-bg: var(--grey-50); }
+.table thead th {
+  padding: 1rem 1.1rem;
+  background: var(--deep-blue-2);
+  letter-spacing: 0.08em; font-size: 0.75rem;
+}
+.table thead th:first-child { border-top-left-radius: 14px; border-bottom-left-radius: 14px; }
+.table thead th:last-child { border-top-right-radius: 14px; border-bottom-right-radius: 14px; }
+.table tbody td { padding: 0.9rem 1.1rem; vertical-align: middle; }
+.table tbody tr { transition: background 0.14s ease; }
+
+/* --- Status / grade badges --- */
+.status-badge { text-transform: capitalize; letter-spacing: 0.05em; padding: 0.4em 0.9em; }
+.grade-badge { padding: 0.45em 0.9em; letter-spacing: 0.02em; }
+
+/* --- Footer --- */
+.brand-footer { border-top: 3px solid var(--crimson); }
+.brand-footer h6 { letter-spacing: 0.14em; }
+.footer-link { position: relative; display: inline-block; padding: 0.15rem 0; transition: color 0.15s ease, transform 0.15s ease; }
+.footer-link:hover { color: var(--crimson-soft); transform: translateX(3px); }
+.social-btn { border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.05); }
+.social-btn:hover { background: var(--crimson); border-color: var(--crimson); box-shadow: 0 8px 18px rgba(220,20,60,0.3); }
+.staff-link:hover { color: var(--crimson-soft); }
+
+/* --- Compare tray / chips / hearts --- */
+.compare-tray { border-top: 3px solid var(--crimson); }
+.chip-filter, .make-pill { transition: all 0.16s ease; }
+.wish-btn { box-shadow: 0 4px 14px rgba(10,20,40,0.18); backdrop-filter: blur(6px); }
+.cmp-btn.active { box-shadow: 0 4px 12px rgba(10,20,40,0.2); }
+.recent-card:hover { border-color: rgba(220,20,60,0.4); box-shadow: var(--shadow-md); }
+
+/* --- Chat panel --- */
+.chat-panel { border-radius: 24px; box-shadow: 0 30px 80px rgba(10,20,40,0.35); }
+.chat-header { padding: 1rem 1.15rem; }
+.chat-msg.bot { border-radius: 16px; }
+.chat-msg.user { background: var(--deep-blue-2); }
+.chat-chip:hover { box-shadow: 0 4px 12px rgba(10,20,40,0.18); }
+
+/* --- Notifications --- */
+.notif-panel { border-radius: 20px; }
+.notif-head { border-radius: 20px 20px 0 0; }
+
+/* --- App shell polish --- */
+.app-topbar { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.app-tab { position: relative; }
+.app-tab.active::before {
+  content: ""; position: absolute; left: 4px; top: 22%; bottom: 22%;
+  width: 3px; border-radius: 3px; background: var(--crimson);
+}
+@media (max-width: 991.98px) { .app-tab.active::before { display: none; } }
+.app-sidebar { gap: 0.4rem; }
+
+/* --- Accordion / FAQ --- */
+.faq-item .accordion-button:not(.collapsed) { background: rgba(220,20,60,0.05); }
+
+/* --- Scroll cue (homepage) --- */
+.hero-scroll {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  color: rgba(255,255,255,0.55); font-size: 0.75rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; transition: color 0.15s ease;
+}
+.hero-scroll:hover { color: #fff; }
+.hero-scroll i { animation: scrollBounce 1.6s ease infinite; }
+@keyframes scrollBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+/* --- Skeleton loaders --- */
+.skeleton { border-radius: 12px; }

@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let page = 1;
   let loggedIn = false;
   let wishlistIds = new Set();
+  const CAR_PLACEHOLDER = "/static/img/placeholder-car.svg";
 
   window.chatOpen = () => {
     const panel = document.getElementById("chatPanel");
@@ -40,9 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="recent-strip d-flex gap-3 overflow-auto pb-2">
           ${data.vehicles.map((v) => `
             <a href="/catalog/${v.slug}" class="recent-card d-flex align-items-center gap-2 text-decoration-none">
-              <div class="vehicle-placeholder d-flex align-items-center justify-content-center" style="width:64px;height:48px;border-radius:10px;">
-                <i class="bi bi-car-front-fill"></i>
-              </div>
+              ${(v.photos && v.photos.length)
+                ? `<img src="${v.photos[0]}" alt="" style="width:64px;height:48px;object-fit:cover;border-radius:10px;" onerror="this.style.display='none';">`
+                : `<div class="vehicle-placeholder d-flex align-items-center justify-content-center" style="width:64px;height:48px;border-radius:10px;">
+                     <i class="bi bi-car-front-fill"></i>
+                   </div>`}
               <div>
                 <div class="fw-semibold small text-dark">${v.year} ${escapeHtml(v.make)} ${escapeHtml(v.model)}</div>
                 <small class="text-muted">${fmtMoney(v.fob_price_usd)} FOB</small>
@@ -99,10 +102,12 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="vehicle-img">
             ${heart}
             <a href="/catalog/${v.slug}">
-              <div class="vehicle-placeholder d-flex flex-column align-items-center justify-content-center">
-                <i class="bi bi-car-front-fill placeholder-car"></i>
-                <span class="placeholder-text">${escapeHtml(v.make)} ${escapeHtml(v.model)}</span>
-              </div>
+              ${(v.photos && v.photos.length)
+                ? `<img src="${v.photos[0]}" alt="${escapeHtml(v.full_title || (v.make + " " + v.model))}" loading="lazy" onerror="this.onerror=null;this.src='${CAR_PLACEHOLDER}';">`
+                : `<div class="vehicle-placeholder d-flex flex-column align-items-center justify-content-center">
+                     <i class="bi bi-car-front-fill placeholder-car"></i>
+                     <span class="placeholder-text">${escapeHtml(v.make)} ${escapeHtml(v.model)}</span>
+                   </div>`}
             </a>
             <span class="badge position-absolute top-0 start-0 m-2 status-badge status-${v.status}">${v.status}</span>
             ${v.auction_grade ? `<span class="badge position-absolute bottom-0 start-0 m-2 grade-badge">${escapeHtml(v.auction_grade)} ★</span>` : ""}

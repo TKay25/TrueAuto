@@ -17,6 +17,9 @@ env/
 *.sqlite
 *.sqlite3
 
+# Uploaded images
+static/uploads/
+
 # OS / editor
 .DS_Store
 Thumbs.db

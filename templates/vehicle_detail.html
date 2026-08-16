@@ -18,7 +18,7 @@
         <div class="card vehicle-card border-0 overflow-hidden shadow-sm">
           <div class="vehicle-img rounded-top" style="height: 380px;">
             {% if photos %}
-              <img src="{{ photos[0] }}" alt="{{ v.full_title }}" id="mainPhoto">
+              <img src="{{ photos[0] }}" alt="{{ v.full_title }}" id="mainPhoto" onerror="this.onerror=null;this.src='{{ DEFAULT_CAR_IMG }}';">
             {% else %}
               <div class="vehicle-placeholder d-flex flex-column align-items-center justify-content-center">
                 <i class="bi bi-car-front-fill" style="font-size: 5rem;"></i>
@@ -37,7 +37,7 @@
         <div class="d-flex gap-2 mt-2 flex-wrap">
           {% for p in photos %}
             <div class="thumb" data-src="{{ p }}" style="width:76px;height:56px;border-radius:10px;overflow:hidden;cursor:pointer;border:2px solid var(--grey-200);">
-              <img src="{{ p }}" alt="Photo {{ loop.index }}" style="width:100%;height:100%;object-fit:cover;">
+              <img src="{{ p }}" alt="Photo {{ loop.index }}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">
             </div>
           {% endfor %}
         </div>

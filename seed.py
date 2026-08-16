@@ -7,6 +7,7 @@ Run:  python seed.py
 - Creates one sample order with a full tracking timeline + a verified payment,
   so you can immediately see the transparency features in action.
 """
+import json
 import re
 from datetime import datetime, timedelta
 
@@ -111,11 +112,24 @@ def seed():
                              "Reserved for serious buyers."),
         ]
 
+        # Stock car photos (generic Unsplash images) so the catalog looks alive
+        # immediately. Swap these for the real auction photos any time.
+        STOCK_IMAGES = {
+            "Toyota": "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=60",
+            "Honda": "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=900&q=60",
+            "Mazda": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=60",
+            "Nissan": "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=900&q=60",
+            "Subaru": "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=900&q=60",
+            "default": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=60",
+        }
+
         created = []
         for v in vehicles:
+            primary = STOCK_IMAGES.get(v["make"], STOCK_IMAGES["default"])
+            gallery = [primary, STOCK_IMAGES["default"]] if primary != STOCK_IMAGES["default"] else [primary]
             veh = Vehicle(
                 slug=slugify(f"{v['make']} {v['model']} {v['year']}"),
-                photos="[]",
+                photos=json.dumps(gallery),
                 **v,
             )
             db.session.add(veh)

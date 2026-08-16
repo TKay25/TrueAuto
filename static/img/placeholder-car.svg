@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-label="Car photo placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0A1428"/>
+      <stop offset="1" stop-color="#14244A"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="400" rx="20" fill="url(#bg)"/>
+  <circle cx="520" cy="80" r="150" fill="none" stroke="#1E3359" stroke-width="2"/>
+  <circle cx="120" cy="340" r="110" fill="none" stroke="#1E3359" stroke-width="2"/>
+  <!-- Stylized car silhouette -->
+  <g transform="translate(95 180)">
+    <!-- body -->
+    <path d="M55 95 C55 62 88 42 132 42 L360 42 C404 42 436 62 440 95 L472 112 C490 124 495 140 495 156 L495 176 C495 187 488 193 476 193 L426 193 C420 193 414 190 410 182 L396 168 L92 168 L78 186 C74 193 68 196 58 194 L36 191 C24 189 17 181 17 170 L19 146 C20 130 28 115 42 108 Z" fill="#9AA6B2"/>
+    <!-- windows -->
+    <path d="M128 57 C124 48 130 44 143 44 L252 44 L252 97 L128 97 Z M272 44 L382 44 C396 44 408 54 414 66 L420 97 L272 97 Z" fill="#0A1428" opacity="0.9"/>
+    <!-- headlight / taillight -->
+    <rect x="20" y="150" width="16" height="10" rx="4" fill="#F97316"/>
+    <rect x="459" y="150" width="16" height="10" rx="4" fill="#DC143C"/>
+    <!-- wheels -->
+    <circle cx="168" cy="192" r="46" fill="#070D1A"/>
+    <circle cx="168" cy="192" r="24" fill="#9AA6B2"/>
+    <circle cx="168" cy="192" r="9" fill="#0A1428"/>
+    <circle cx="382" cy="192" r="46" fill="#070D1A"/>
+    <circle cx="382" cy="192" r="24" fill="#9AA6B2"/>
+    <circle cx="382" cy="192" r="9" fill="#0A1428"/>
+    <!-- ground line -->
+    <line x1="0" y1="200" x2="500" y2="200" stroke="#1E3359" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

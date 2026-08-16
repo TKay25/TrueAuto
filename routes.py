@@ -4,12 +4,17 @@ Dynamic parts (catalog filtering, tracking updates, payments, chat) are handled
 by the JSON API + JS for that "React app" feel, while these pages keep the site
 fast, indexable and shareable.
 """
+import json
+import os
 import re
+import uuid
 
 from flask import (
     Blueprint, render_template, request, redirect, url_for, flash, abort,
+    current_app,
 )
 from flask_login import login_required, current_user, login_user, logout_user
+from werkzeug.utils import secure_filename
 
 from extensions import db
 from config import Config
@@ -38,6 +43,46 @@ def _unique_slug(base):
         candidate = f"{slug}-{i}"
         i += 1
     return candidate
+
+
+# ---------------------------------------------------------------------------
+# Image uploads
+# ---------------------------------------------------------------------------
+def _save_image_upload(file_storage):
+    """Persist an uploaded image under static/uploads and return its URL path.
+
+    Returns None when no file was sent or the extension isn't allowed, so
+    callers can skip it silently.
+    """
+    if not file_storage or not file_storage.filename:
+        return None
+    original = secure_filename(file_storage.filename)
+    ext = (original.rsplit(".", 1)[-1] or "").lower()
+    if ext not in Config.ALLOWED_IMAGE_EXTENSIONS:
+        return None
+    folder = os.path.join(current_app.root_path, Config.UPLOAD_FOLDER)
+    os.makedirs(folder, exist_ok=True)
+    name = f"{uuid.uuid4().hex[:12]}.{ext}"
+    file_storage.save(os.path.join(folder, name))
+    return f"{Config.UPLOAD_URL}/{name}"
+
+
+@pages.post("/admin/upload-photo")
+@login_required
+def admin_upload_photo():
+    """AJAX-friendly image upload for the admin vehicle form.
+
+    Accepts one or more files under the "photo_files" field and returns the
+    saved URL paths as JSON so the page can append them without a reload.
+    """
+    urls = []
+    for f in request.files.getlist("photo_files"):
+        url = _save_image_upload(f)
+        if url:
+            urls.append(url)
+    if not urls:
+        return {"ok": False, "urls": [], "error": "No valid image files received."}, 400
+    return {"ok": True, "urls": urls}
 
 
 # ---------------------------------------------------------------------------
@@ -382,7 +427,18 @@ def _vehicle_from_form(v=None):
 
     photos_raw = request.form.get("photos") or ""
     photos = [p.strip() for p in photos_raw.replace("\n", ",").split(",") if p.strip()]
-    v.photos = __import__("json").dumps(photos)
+    # Merge any freshly uploaded files into the photo list.
+    for f in request.files.getlist("photo_files"):
+        url = _save_image_upload(f)
+        if url:
+            photos.append(url)
+    # De-duplicate while preserving order.
+    seen, unique = set(), []
+    for p in photos:
+        if p not in seen:
+            seen.add(p)
+            unique.append(p)
+    v.photos = json.dumps(unique)
     return v
 
 

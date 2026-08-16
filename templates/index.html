@@ -3,6 +3,7 @@
 
 <!-- ===================== HERO ===================== -->
 <section class="hero">
+  <div class="hero-bg" style="background-image:url('{{ HERO_CAR_IMG }}');"></div>
   <div class="container py-5">
     <div class="row align-items-center g-5 py-4">
       <div class="col-lg-6">
@@ -35,25 +36,31 @@
       </div>
 
       <div class="col-lg-6 d-none d-lg-block reveal">
-        <div class="hero-card p-4">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <span class="fw-bold text-white"><i class="bi bi-truck me-2 text-accent"></i>Live shipment example</span>
-            <span class="badge status-badge status-shipping">Shipping 🚢</span>
+        <div class="hero-card overflow-hidden">
+          <div class="hero-card-img">
+            <img src="{{ featured[0].photo_list()[0] if featured and featured[0].photo_list() else HERO_CAR_IMG }}" alt="Featured vehicle imported from Japan" loading="lazy" onerror="this.onerror=null;this.src='{{ HERO_CAR_IMG }}';">
+            <span class="hero-card-img-badge"><i class="bi bi-car-front-fill me-1"></i>From Japanese Auction 🇯🇵</span>
           </div>
-          <div class="timeline-simple">
-            <div class="tl-item done"><span class="tl-dot"></span><span>Quote requested</span></div>
-            <div class="tl-item done"><span class="tl-dot"></span><span>Auction won — $11,500 FOB</span></div>
-            <div class="tl-item done"><span class="tl-dot"></span><span>Deposit verified (EcoCash)</span></div>
-            <div class="tl-item active"><span class="tl-dot"></span><span>On vessel 'MOL Maestro' → Beira</span></div>
-            <div class="tl-item"><span class="tl-dot"></span><span>Customs & duty</span></div>
-            <div class="tl-item"><span class="tl-dot"></span><span>Delivered in Harare</span></div>
-          </div>
-          <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary">
-            <div class="d-flex align-items-center gap-2">
-              <span class="online-dot"></span>
-              <span class="text-white-50 small">Order <strong class="text-white">TA-2026-0001</strong> · updated 2 min ago</span>
+          <div class="p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="fw-bold text-white"><i class="bi bi-truck me-2 text-accent"></i>Live shipment example</span>
+              <span class="badge status-badge status-shipping">Shipping 🚢</span>
             </div>
-            <a href="{{ url_for('routes.track') }}" class="small text-accent">Track live <i class="bi bi-arrow-right"></i></a>
+            <div class="timeline-simple">
+              <div class="tl-item done"><span class="tl-dot"></span><span>Quote requested</span></div>
+              <div class="tl-item done"><span class="tl-dot"></span><span>Auction won — $11,500 FOB</span></div>
+              <div class="tl-item done"><span class="tl-dot"></span><span>Deposit verified (EcoCash)</span></div>
+              <div class="tl-item active"><span class="tl-dot"></span><span>On vessel 'MOL Maestro' → Beira</span></div>
+              <div class="tl-item"><span class="tl-dot"></span><span>Customs & duty</span></div>
+              <div class="tl-item"><span class="tl-dot"></span><span>Delivered in Harare</span></div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary">
+              <div class="d-flex align-items-center gap-2">
+                <span class="online-dot"></span>
+                <span class="text-white-50 small">Order <strong class="text-white">TA-2026-0001</strong> · updated 2 min ago</span>
+              </div>
+              <a href="{{ url_for('routes.track') }}" class="small text-accent">Track live <i class="bi bi-arrow-right"></i></a>
+            </div>
           </div>
         </div>
         <!-- Floating notification chip -->
@@ -190,6 +197,70 @@
   </div>
 </section>
 
+<!-- ===================== WHY WE'RE DIFFERENT (vs SBT Japan) ===================== -->
+<section class="py-5" id="why-us">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="section-kicker">Why True Auto Zim</span>
+      <h2 class="fw-black">Not your average Japan exporter</h2>
+      <p class="text-muted mx-auto mb-0" style="max-width: 660px;">Big exporters like SBT Japan have huge inventory — but the <strong>transparency, live tracking and local support</strong> are what actually matter when your money is on the line.</p>
+    </div>
+    <div class="vs-card reveal">
+      <div class="table-responsive">
+        <table class="table vs-table align-middle mb-0">
+          <thead>
+            <tr>
+              <th class="vs-blank"></th>
+              <th class="vs-us-head"><i class="bi bi-car-front-fill me-1"></i>True Auto Zim</th>
+              <th class="vs-them-head"><i class="bi bi-shop me-1"></i>Typical exporter (e.g. SBT Japan)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="vs-label">How we get paid</td>
+              <td class="vs-us"><i class="bi bi-check-circle-fill me-1"></i>One fixed ${{ COMMISSION|money }} auction &amp; shipping fee — nothing else</td>
+              <td class="vs-them">Percentage commission stacked on top of every cost</td>
+            </tr>
+            <tr>
+              <td class="vs-label">Price transparency</td>
+              <td class="vs-us"><i class="bi bi-check-circle-fill me-1"></i>Itemised invoice with receipts — auction price, freight, duty, VAT</td>
+              <td class="vs-them">Quotes often hide fees that appear later</td>
+            </tr>
+            <tr>
+              <td class="vs-label">Order tracking</td>
+              <td class="vs-us"><i class="bi bi-check-circle-fill me-1"></i>10-stage live pipeline + WhatsApp &amp; SMS alerts at every step</td>
+              <td class="vs-them">No per-car live tracking — you chase them</td>
+            </tr>
+            <tr>
+              <td class="vs-label">Payments</td>
+              <td class="vs-us"><i class="bi bi-check-circle-fill me-1"></i>EcoCash · InnBucks · OneMoney · Bank (USD/RTGS)</td>
+              <td class="vs-them">International bank transfer only</td>
+            </tr>
+            <tr>
+              <td class="vs-label">Support</td>
+              <td class="vs-us"><i class="bi bi-check-circle-fill me-1"></i>Harare-based team, WhatsApp + in-app chatbot, English &amp; local time</td>
+              <td class="vs-them">Overseas call centres in different time zones</td>
+            </tr>
+            <tr>
+              <td class="vs-label">Evidence</td>
+              <td class="vs-us"><i class="bi bi-check-circle-fill me-1"></i>Real auction sheet, grade &amp; photos shared before you commit</td>
+              <td class="vs-them">Stock photos and limited history</td>
+            </tr>
+            <tr>
+              <td class="vs-label">Delivery cost</td>
+              <td class="vs-us"><i class="bi bi-check-circle-fill me-1"></i>Beira &amp; Durban routes quoted upfront, port clearing optional</td>
+              <td class="vs-them">Estimated, then revised later</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="text-center mt-4 reveal">
+      <a href="{{ url_for('routes.pricing') }}" class="btn btn-brand rounded-pill px-4">See our full cost model <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== TESTIMONIALS ===================== -->
 <section class="section-alt py-5">
   <div class="container">
@@ -296,6 +367,31 @@
     color: #fff; font-weight: 800;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
+  }
+  /* Why-us comparison table */
+  .vs-card {
+    border: 1px solid var(--grey-200); border-radius: 20px; overflow: hidden;
+    box-shadow: var(--shadow-sm); background: #fff;
+  }
+  .vs-table { --bs-table-bg: transparent; }
+  .vs-table thead th {
+    background: var(--deep-blue-2) !important;
+    color: #fff; letter-spacing: 0.06em;
+    font-size: 0.85rem; padding: 1rem 1.1rem;
+  }
+  .vs-blank { width: 150px; }
+  .vs-label {
+    font-weight: 700; color: var(--grey-800);
+    white-space: nowrap; padding-right: 1.25rem;
+  }
+  .vs-us { font-weight: 600; color: var(--deep-green); }
+  .vs-us i { color: #1e9e5a; }
+  .vs-them { color: var(--grey-400); }
+  .vs-table tbody td { padding: 1rem 1.1rem; border-color: var(--grey-100); }
+  .vs-table tbody tr:hover { background: var(--grey-50); }
+  @media (max-width: 767.98px) {
+    .vs-table { font-size: 0.82rem; }
+    .vs-label { white-space: normal; min-width: 120px; }
   }
 </style>
 

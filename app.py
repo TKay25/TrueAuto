@@ -2,7 +2,7 @@
 
 Run with:  python app.py   (or:  flask --app app run)
 """
-from flask import Flask
+from flask import Flask, url_for
 
 from config import Config
 from extensions import db, login_manager
@@ -63,6 +63,8 @@ def create_app():
             "PORT_OPTIONS": Config.PORT_OPTIONS,
             "DEFAULT_PORT": Config.DEFAULT_PORT,
             "estimate_for_vehicle": estimate_for_vehicle,
+            "HERO_CAR_IMG": Config.HERO_CAR_IMG,
+            "DEFAULT_CAR_IMG": url_for("static", filename="img/placeholder-car.svg"),
             "COST_MODEL": {
                 "duty_rate": Config.DUTY_RATE,
                 "surtax_rate": Config.SURTAX_RATE,

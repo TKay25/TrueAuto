@@ -72,6 +72,20 @@ class Config:
     AT_USERNAME = os.environ.get("AT_USERNAME", "")
     AT_API_KEY = os.environ.get("AT_API_KEY", "")
 
+    # --- Image uploads -------------------------------------------------
+    # Image files are saved under static/uploads/ (served by Flask at
+    # /static/uploads/...); the DB stores the resulting URL paths.
+    UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER", "static/uploads")
+    UPLOAD_URL = "/static/uploads"
+    MAX_CONTENT_LENGTH = int(os.environ.get("MAX_CONTENT_LENGTH", 16 * 1024 * 1024))
+    ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
+
+    # Default hero image (external CDN, used when a featured car has no photo)
+    HERO_CAR_IMG = os.environ.get(
+        "HERO_CAR_IMG",
+        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=70",
+    )
+
     # --- Business ------------------------------------------------------
     COMPANY_NAME = "True Auto Zim"
     CONTACT_PHONE = os.environ.get("CONTACT_PHONE", "+263 77 123 4567")

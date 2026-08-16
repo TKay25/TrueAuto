@@ -18,6 +18,8 @@ const App = {
 const PORTAL = window.PORTAL || "client";
 const homeView = () => (PORTAL === "admin" ? "admin_overview" : "dashboard");
 
+const CAR_PLACEHOLDER = "/static/img/placeholder-car.svg";
+
 const $ = (id) => document.getElementById(id);
 const viewEl = () => $("appView");
 const authRequired = (view) =>
@@ -38,6 +40,12 @@ function spinner(text = "Loading…") {
 }
 
 function vehicleImageHTML(v, height = 200) {
+  const photo = (v.photos && v.photos.length) ? v.photos[0] : "";
+  if (photo) {
+    return `<img src="${photo}" alt="${escapeHtml(v.full_title || (v.make + " " + v.model))}" loading="lazy"
+      style="width:100%;height:${height}px;object-fit:cover;display:block;background:var(--grey-100);"
+      onerror="this.onerror=null;this.src='${CAR_PLACEHOLDER}';">`;
+  }
   return `<div class="vehicle-placeholder d-flex flex-column align-items-center justify-content-center" style="height:${height}px;">
     <i class="bi bi-car-front-fill placeholder-car"></i>
     <span class="placeholder-text">${escapeHtml(v.make)} ${escapeHtml(v.model)}</span></div>`;

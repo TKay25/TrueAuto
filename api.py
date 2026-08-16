@@ -44,6 +44,7 @@ def vehicle_json(v, include_estimate=False):
         "featured": v.featured,
         "title": v.title,
         "full_title": v.full_title,
+        "photos": v.photo_list(),
     }
     if include_estimate:
         data["landed"] = as_dict(estimate_for_vehicle(v))

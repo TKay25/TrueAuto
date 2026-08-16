@@ -8,7 +8,7 @@
 
     <div class="card border shadow-sm">
       <div class="card-body p-4 p-md-5">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
           <div class="row g-3">
             <div class="col-md-4"><label class="form-label fw-semibold">Make</label>
               <input name="make" class="form-control" value="{{ v.make if v else '' }}" required></div>
@@ -54,8 +54,24 @@
               <textarea name="description" class="form-control" rows="3">{{ v.description if v else '' }}</textarea></div>
             <div class="col-12"><label class="form-label fw-semibold">Auction sheet URL</label>
               <input name="auction_sheet" class="form-control" value="{{ v.auction_sheet if v and v.auction_sheet else '' }}"></div>
-            <div class="col-12"><label class="form-label fw-semibold">Photos (comma-separated URLs)</label>
-              <input name="photos" class="form-control" value="{{ v.photo_list()|join(', ') if v else '' }}"></div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Photos</label>
+              <div class="d-flex align-items-center gap-2">
+                <input type="file" id="photo_files" name="photo_files" class="form-control" multiple accept="image/*">
+                <button type="button" id="upload_btn" class="btn btn-outline-brand rounded-pill text-nowrap">Upload</button>
+              </div>
+              <div id="upload_status" class="form-text mb-2">JPG, PNG, GIF or WebP · up to ~16&nbsp;MB total. Uploaded photos are stored under <code>static/uploads/</code>.</div>
+              <div id="photo_thumbs" class="d-flex flex-wrap gap-2 mt-1">
+                {% for p in (v.photo_list() if v else []) %}
+                  <div class="photo-thumb" data-url="{{ p }}">
+                    <img src="{{ p }}" alt="Photo {{ loop.index }}">
+                    <button type="button" class="photo-remove" title="Remove">&times;</button>
+                  </div>
+                {% endfor %}
+              </div>
+              <label class="form-label fw-semibold mt-3 mb-1">Photo URLs (auto-filled from uploads, or paste external links)</label>
+              <input name="photos" id="photos" class="form-control" value="{{ v.photo_list()|join(', ') if v else '' }}" placeholder="https://.../car-1.jpg, https://.../car-2.jpg">
+            </div>
           </div>
           <div class="d-flex gap-2 mt-4">
             <button type="submit" class="btn btn-accent rounded-pill px-4">{{ 'Save changes' if v else 'Add vehicle' }}</button>
@@ -66,4 +82,69 @@
     </div>
   </div>
 </section>
+
+<script>
+(function () {
+  const input = document.getElementById('photo_files');
+  const btn = document.getElementById('upload_btn');
+  const status = document.getElementById('upload_status');
+  const photos = document.getElementById('photos');
+  const thumbs = document.getElementById('photo_thumbs');
+
+  // Keep the photos text field in sync with the visible thumbnails.
+  function syncPhotos() {
+    const urls = Array.from(thumbs.querySelectorAll('.photo-thumb')).map(t => t.dataset.url);
+    photos.value = urls.join(', ');
+  }
+
+  function renderThumbs(urls) {
+    urls.forEach(function (u) {
+      const el = document.createElement('div');
+      el.className = 'photo-thumb';
+      el.dataset.url = u;
+      el.innerHTML = '<img src="' + u + '" alt="photo"><button type="button" class="photo-remove" title="Remove">&times;</button>';
+      el.querySelector('.photo-remove').addEventListener('click', function () {
+        el.remove();
+        syncPhotos();
+      });
+      thumbs.appendChild(el);
+    });
+    syncPhotos();
+  }
+
+  // Attach remove handlers to any pre-rendered thumbnails.
+  thumbs.querySelectorAll('.photo-thumb').forEach(function (t) {
+    t.querySelector('.photo-remove').addEventListener('click', function () {
+      t.remove();
+      syncPhotos();
+    });
+  });
+
+  async function upload() {
+    if (!input.files.length) { status.textContent = 'Choose at least one image first.'; return; }
+    const fd = new FormData();
+    for (const f of input.files) fd.append('photo_files', f);
+    btn.disabled = true;
+    status.textContent = 'Uploading…';
+    try {
+      const res = await fetch('{{ url_for('routes.admin_upload_photo') }}', { method: 'POST', body: fd });
+      const data = await res.json();
+      if (data.ok) {
+        renderThumbs(data.urls);
+        status.textContent = data.urls.length + ' photo(s) uploaded.';
+        input.value = '';
+      } else {
+        status.textContent = data.error || 'Upload failed.';
+      }
+    } catch (e) {
+      status.textContent = 'Upload failed: ' + e.message;
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  btn.addEventListener('click', upload);
+  input.addEventListener('change', upload);
+})();
+</script>
 {% endblock %}

@@ -4,7 +4,8 @@
     <a href="{{ url_for('routes.vehicle_detail', slug=v.slug) }}" class="text-decoration-none">
       <div class="vehicle-img">
         {% if v.photo_list() %}
-          <img src="{{ v.photo_list()[0] }}" alt="{{ v.full_title }}" loading="lazy">
+          <img src="{{ v.photo_list()[0] }}" alt="{{ v.full_title }}" loading="lazy"
+               onerror="this.onerror=null;this.src='{{ DEFAULT_CAR_IMG }}';">
         {% else %}
           <div class="vehicle-placeholder d-flex flex-column align-items-center justify-content-center">
             <i class="bi bi-car-front-fill placeholder-car"></i>

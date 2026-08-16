@@ -170,6 +170,30 @@ body {
   box-shadow: var(--shadow-lg);
 }
 
+/* Hero background image (subtle texture behind everything) */
+.hero-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center 15%;
+  opacity: 0.16; pointer-events: none;
+}
+
+/* Hero card image strip (homepage featured car) */
+.hero-card-img {
+  height: 210px; position: relative; overflow: hidden; background: var(--navy);
+}
+.hero-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-card-img::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(6,13,26,0) 45%, rgba(6,13,26,0.9));
+}
+.hero-card-img-badge {
+  position: absolute; z-index: 2; left: 1rem; bottom: 0.9rem;
+  background: var(--crimson); color: #fff;
+  font-weight: 700; font-size: 0.72rem; letter-spacing: 0.05em;
+  padding: 0.4em 0.9em; border-radius: 50rem;
+  box-shadow: var(--shadow-crimson);
+}
+
 /* Makes marquee */
 .makes-marquee { overflow: hidden; position: relative; }
 .makes-track { display: flex; gap: 1rem; animation: marquee 30s linear infinite; width: max-content; }
@@ -848,6 +872,24 @@ h1, h2, h3, h4, h5, h6, .fw-black, .display-1, .display-2, .display-3, .display-
 .form-label { font-weight: 600; font-size: 0.86rem; color: var(--grey-600); }
 .input-group-text { border-radius: 14px !important; }
 .auth-card { border-radius: 26px; }
+
+/* Admin photo upload thumbnails */
+.photo-thumb {
+  position: relative; width: 96px; height: 72px;
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--grey-200); background: var(--grey-100);
+}
+.photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-remove {
+  position: absolute; top: 4px; right: 4px;
+  width: 22px; height: 22px;
+  border: none; border-radius: 50%;
+  background: rgba(7, 13, 26, 0.75); color: #fff;
+  font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s ease;
+}
+.photo-remove:hover { background: var(--crimson); }
 
 /* --- Tables --- */
 .table { --bs-table-hover-bg: var(--grey-50); }

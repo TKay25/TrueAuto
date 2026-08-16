@@ -59,7 +59,7 @@ function costBreakdownHTML(c) {
   ];
   let html = rows.map(([label, val]) =>
     `<div class="cost-row"><span>${label}</span><span class="fw-semibold">${fmtMoney(val)}</span></div>`).join("");
-  html += `<div class="cost-row commission"><span>True Auto commission (fixed)</span><span class="fw-bold">${fmtMoney(c.commission)}</span></div>`;
+  html += `<div class="cost-row commission"><span>Auction &amp; shipping fee (fixed)</span><span class="fw-bold">${fmtMoney(c.commission)}</span></div>`;
   html += `<div class="cost-row total"><span>Total landed in Harare</span><span class="text-accent-dark">${fmtMoney(c.total)}</span></div>`;
   return `<div class="cost-breakdown">${html}</div>`;
 }
@@ -579,7 +579,7 @@ async function viewPricing() {
     <div class="text-center mb-4">
       <span class="section-kicker">Pricing</span>
       <h1 class="fw-black">Landed Cost Calculator</h1>
-      <p class="text-muted">One fixed commission of <strong>${fmtMoney(cm.commission)}</strong>. Estimate any car instantly.</p>
+      <p class="text-muted">Our only income is a fixed auction &amp; shipping assistance fee of <strong>${fmtMoney(cm.commission)}</strong>. Everything else is passed through at cost. Estimate any car instantly.</p>
     </div>
     <div class="row g-4 justify-content-center">
       <div class="col-md-6 col-lg-5">

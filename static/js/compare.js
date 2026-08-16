@@ -119,7 +119,7 @@ const Compare = {
       ["Auction location", (v) => v.auction_location || "Japan"],
       ["Japan FOB price", (v) => fmtMoney(v.fob_price_usd)],
       ["Landed in Harare", (v) => fmtMoney(v.landed.total)],
-      ["Our commission", (v) => fmtMoney(v.landed.commission)],
+      ["Auction &amp; ship fee", (v) => fmtMoney(v.landed.commission)],
     ];
 
     document.getElementById("compareBody").innerHTML = specRows.map(([label, fn]) => `

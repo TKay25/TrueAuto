@@ -12,8 +12,8 @@
         </h1>
         <p class="lead text-white-50 mb-4 reveal">
           We source quality used cars from Japanese auctions, show you the <strong class="text-white">actual auction price</strong>,
-          charge <strong class="text-white">one fixed commission</strong> — and let you track every stage
-          from auction to your driveway. No middlemen, no hidden mark-ups.
+          charge <strong class="text-white">one fixed auction &amp; shipping assistance fee</strong> — and let you track every stage
+          from auction to your driveway. Every other cost is passed through at cost. No middlemen, no hidden mark-ups.
         </p>
         <div class="d-flex flex-wrap gap-2 mb-4 reveal">
           <a href="{{ url_for('routes.catalog') }}" class="btn btn-accent btn-lg rounded-pill px-4">
@@ -28,7 +28,7 @@
         </div>
         <div class="hero-stats d-flex gap-3 text-white flex-wrap reveal">
           <div><div class="fs-3 fw-black" data-count="0" data-prefix="">0</div><small class="text-white-50">Hidden mark-ups</small></div>
-          <div><div class="fs-3 fw-black" data-count="{{ COMMISSION|round|int }}" data-prefix="$">0</div><small class="text-white-50">Fixed commission / car</small></div>
+          <div><div class="fs-3 fw-black" data-count="{{ COMMISSION|round|int }}" data-prefix="$">0</div><small class="text-white-50">Auction &amp; shipping / car</small></div>
           <div><div class="fs-3 fw-black" data-count="10">0</div><small class="text-white-50">Live tracking stages</small></div>
           <div><div class="fs-3 fw-black" data-count="7" data-suffix="d">0</div><small class="text-white-50">Avg. first update</small></div>
         </div>
@@ -157,7 +157,7 @@
       <div class="col-lg-6 reveal">
         <span class="section-kicker">Our promise</span>
         <h2 class="fw-black mb-3">We show you <span class="grad-text">every cent</span>.</h2>
-        <p class="text-muted mb-4">Auction price, freight, insurance, duty, VAT, clearing, transport — item by item, in writing, with receipts. We earn one clearly-stated commission and nothing else.</p>
+        <p class="text-muted mb-4">Auction price, freight, insurance, duty, VAT, port handling — item by item, in writing, with receipts. Our only income is one fixed auction &amp; shipping assistance fee for helping you bid, buy and ship from Japan. Everything else is passed through at cost — and clearing to Harare is optional.</p>
         <div class="d-flex gap-3 flex-wrap">
           <div class="p-3 border rounded-4" style="background: var(--grey-50);">
             <div class="fw-black fs-4 text-accent-dark" data-count="{{ (featured[0].fob_price_usd * 0.2)|round|int if featured else 1000 }}" data-prefix="$">0</div>
@@ -179,7 +179,7 @@
               <div class="cost-row"><span>Auction & export fees</span><span class="fw-semibold">$300.00</span></div>
               <div class="cost-row"><span>Import duty + surtax + VAT</span><span class="fw-semibold">$7,127.00</span></div>
               <div class="cost-row"><span>Port, clearing & transport</span><span class="fw-semibold">$1,350.00</span></div>
-              <div class="cost-row commission"><span>True Auto commission (fixed)</span><span class="fw-bold">$850.00</span></div>
+              <div class="cost-row commission"><span>Auction &amp; shipping fee (fixed)</span><span class="fw-bold">$850.00</span></div>
               <div class="cost-row total"><span>Total landed in Harare</span><span class="text-accent-dark">$22,914.00</span></div>
             </div>
             <p class="small text-muted mt-3 mb-0"><i class="bi bi-shield-check text-success me-1"></i>Indicative breakdown — verified with our clearing agent before you commit.</p>
@@ -242,7 +242,7 @@
     <div class="accordion reveal" id="faqAcc">
       <div class="accordion-item faq-item">
         <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#f1">How do you make money?</button></h2>
-        <div id="f1" class="accordion-collapse collapse show" data-bs-parent="#faqAcc"><div class="accordion-body text-muted">One fixed commission of ${{ COMMISSION|money }} per car — published on every quote. Every other cost is passed through at cost with receipts. That's the whole model.</div></div>
+        <div id="f1" class="accordion-collapse collapse show" data-bs-parent="#faqAcc"><div class="accordion-body text-muted">We earn ONE fixed auction &amp; shipping assistance fee of ${{ COMMISSION|money }} per car — it covers us helping you bid, buy and ship from the Japanese auction. Every other cost (freight, insurance, duty, VAT, port handling) is passed through at cost with receipts. Clearing &amp; delivery to Harare is optional: we can arrange it, or you clear the car yourself at the port. That's the whole model.</div></div>
       </div>
       <div class="accordion-item faq-item">
         <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">How do I know I'm getting the real auction price?</button></h2>

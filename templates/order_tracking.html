@@ -69,7 +69,7 @@
               <div class="cost-row"><span>Freight</span><span class="fw-semibold">${{ cost.freight|money }}</span></div>
               <div class="cost-row"><span>Duty + surtax + VAT</span><span class="fw-semibold">${{ (cost.duty + cost.surtax + cost.vat)|money }}</span></div>
               <div class="cost-row"><span>Clearing, port, transport</span><span class="fw-semibold">${{ (cost.port_handling + cost.clearing + cost.inspection + cost.transport)|money }}</span></div>
-              <div class="cost-row commission"><span>True Auto commission</span><span class="fw-bold">${{ cost.commission|money }}</span></div>
+              <div class="cost-row commission"><span>Auction &amp; shipping fee</span><span class="fw-bold">${{ cost.commission|money }}</span></div>
               <div class="cost-row total"><span>Total</span><span class="text-accent-dark">${{ cost.total|money }}</span></div>
             </div>
           </div>

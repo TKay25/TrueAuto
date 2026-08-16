@@ -35,7 +35,7 @@ class Config:
     CLEARING_FEE = float(os.environ.get("CLEARING_FEE", 350))        # clearing agent fee
     INSPECTION_FEE = float(os.environ.get("INSPECTION_FEE", 50))     # VID / police inspection
     TRANSPORT_TO_HRE = float(os.environ.get("TRANSPORT_TO_HRE", 700))  # port -> Harare trucking
-    COMMISSION_FLAT = float(os.environ.get("COMMISSION_FLAT", 850))  # our fixed commission (USD)
+    COMMISSION_FLAT = float(os.environ.get("COMMISSION_FLAT", 850))  # fixed auction & shipping assistance fee (USD)
 
     # --- Chatbot -----------------------------------------------------
     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")

@@ -26,14 +26,19 @@ KB = {
         "Full transparency, no hidden costs. That's the True Auto promise."
     ),
     "pricing": (
-        f"We charge ONE fixed, clearly-stated commission of "
-        f"${Config.COMMISSION_FLAT:,.0f} per car — that's it. "
-        "You see every cost line itemised: Japan auction price (FOB), freight, "
-        "insurance, duty, VAT, clearing and transport. No mark-ups, no surprises."
+        f"We charge ONE fixed auction & shipping assistance fee of "
+        f"${Config.COMMISSION_FLAT:,.0f} per car — it covers us helping you bid, "
+        "buy and ship from the Japanese auction. That's it. You see every cost "
+        "line itemised: Japan auction price (FOB), freight, insurance, duty, VAT "
+        "and port handling — all passed through at cost. Clearing to Harare is "
+        "optional (we can arrange it, or you clear the car yourself at the port). "
+        "No mark-ups, no surprises."
     ),
     "landed_cost": (
-        "Your total landed cost = Japan price + freight + insurance + import "
-        "duty + VAT + clearing fees + transport to Harare + our fixed commission. "
+        "Your total = Japan price + freight + insurance + import duty + VAT + "
+        "port handling + our fixed auction & shipping fee. Clearing + delivery "
+        "to Harare is optional and added only if you want us to arrange it. "
+        "All costs except our fee are passed through at cost. "
         "Use the calculator on our Pricing page to get an instant estimate for any car."
     ),
     "duty": (
@@ -101,7 +106,8 @@ INTENTS = [
     ("how does", "how_it_works"), ("how do you", "how_it_works"),
     ("process", "how_it_works"), ("how it works", "how_it_works"),
     ("step", "how_it_works"), ("procedur", "how_it_works"),
-    ("price", "pricing"), ("commission", "pricing"), ("charge", "pricing"),
+    ("price", "pricing"), ("pricing", "pricing"), ("fee", "pricing"),
+    ("commission", "pricing"), ("charge", "pricing"),
     ("cost", "landed_cost"), ("how much", "landed_cost"), ("landed", "landed_cost"),
     ("duty", "duty"), ("tax", "duty"), ("vat", "duty"), ("zimra", "duty"), ("customs", "duty"),
     ("deposit", "deposit"), ("pay", "payments"), ("payment", "payments"),
@@ -190,7 +196,7 @@ def handle_message(text, user=None):
         "reply": (
             "I'm not 100% sure about that one 😅 — but I can help with:\n\n"
             "• 🚗 How the process works\n"
-            "• 💰 Pricing & our fixed commission\n"
+            "• 💰 Pricing & our auction/shipping fee\n"
             "• 📦 Tracking your order (send your order number)\n"
             "• 💳 Payments (EcoCash, InnBucks, bank)\n"
             "• 📞 Contacting our team\n\n"

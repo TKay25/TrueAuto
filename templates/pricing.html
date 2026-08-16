@@ -6,10 +6,10 @@
   <div class="container">
     <div class="text-center mb-5">
       <span class="section-kicker">Pricing</span>
-      <h1 class="fw-black text-white">One Fixed Commission. <span class="grad-text">Total Transparency.</span></h1>
-      <p class="text-white-50 mx-auto" style="max-width: 660px;">
-        We charge a single, clearly stated commission of <strong class="text-white">${{ COMMISSION|money }} per car</strong>.
-        Every other cost is passed through at cost — with receipts. Here's exactly how your money is spent.
+      <h1 class="fw-black text-white">One Auction &amp; Shipping Fee. <span class="grad-text">Total Transparency.</span></h1>
+      <p class="text-white-50 mx-auto" style="max-width: 700px;">
+        Our only income is a clearly stated <strong class="text-white">auction &amp; shipping assistance fee of ${{ COMMISSION|money }} per car</strong> —
+        it covers us helping you bid, buy and ship from Japan. Every other cost is passed through at cost — with receipts. Clearing to Harare is optional. Here's exactly how your money is spent.
       </p>
     </div>
 
@@ -19,8 +19,8 @@
           <div class="card-body p-4 text-center">
             <div class="stat-icon mx-auto mb-3" style="background: rgba(192,16,46,0.1); color: var(--crimson);"><i class="bi bi-tag-fill"></i></div>
             <h2 class="fw-black text-accent-dark">${{ COMMISSION|money }}</h2>
-            <h6 class="fw-bold">Fixed commission / car</h6>
-            <p class="text-muted small mb-0">The same for every vehicle, no matter the price. No percentage games, no hidden cut.</p>
+            <h6 class="fw-bold">Auction &amp; shipping fee / car</h6>
+            <p class="text-muted small mb-0">The same for every vehicle, no matter the price — it covers our auction bidding + shipping service. Everything else is passed through at cost. Clearing to Harare is optional. No hidden cut.</p>
           </div>
         </div>
       </div>
@@ -52,7 +52,7 @@
         <div class="card border shadow-sm">
           <div class="card-body p-4 p-md-5">
             <h4 class="fw-bold mb-2"><i class="bi bi-calculator text-accent me-2"></i>Landed Cost Calculator</h4>
-            <p class="text-muted small mb-4">Estimate what any Japan car costs to land in Harare. Same formula our team uses for quotes.</p>
+            <p class="text-muted small mb-4">Estimate what any Japan car costs — delivered to Harare, or just landed at port if you clear it yourself. Same formula our team uses for quotes.</p>
             <div class="row g-3">
               <div class="col-md-5">
                 <label class="form-label fw-semibold">Japan auction price (FOB) — USD</label>
@@ -79,6 +79,13 @@
               </div>
             </div>
             <div class="small text-muted mt-2" id="c-route"></div>
+            <div class="form-check form-switch mt-3">
+              <input class="form-check-input" type="checkbox" id="calcClearing" checked>
+              <label class="form-check-label small" for="calcClearing">
+                Include clearing &amp; delivery to Harare
+                <span class="text-muted">(optional — you can clear the car yourself at the port)</span>
+              </label>
+            </div>
 
             <div class="row mt-4 g-4">
               <div class="col-md-6">
@@ -91,10 +98,10 @@
                   <div class="cost-row"><span>Surtax (10%)</span><span class="fw-semibold" id="c-surtax">—</span></div>
                   <div class="cost-row"><span>VAT (15%)</span><span class="fw-semibold" id="c-vat">—</span></div>
                   <div class="cost-row"><span>Port handling</span><span class="fw-semibold" id="c-port">—</span></div>
-                  <div class="cost-row"><span>Clearing & inspection</span><span class="fw-semibold" id="c-clearing">—</span></div>
-                  <div class="cost-row"><span>Transport to Harare</span><span class="fw-semibold" id="c-transport">—</span></div>
-                  <div class="cost-row commission"><span>True Auto commission</span><span class="fw-bold" id="c-commission">—</span></div>
-                  <div class="cost-row total"><span>Total landed in Harare</span><span class="text-accent-dark" id="c-total">—</span></div>
+                  <div class="cost-row" id="row-clearing"><span>Clearing &amp; inspection</span><span class="fw-semibold" id="c-clearing">—</span></div>
+                  <div class="cost-row" id="row-transport"><span>Transport to Harare</span><span class="fw-semibold" id="c-transport">—</span></div>
+                  <div class="cost-row commission"><span>Auction &amp; shipping fee</span><span class="fw-bold" id="c-commission">—</span></div>
+                  <div class="cost-row total"><span id="c-total-label">Total delivered to Harare</span><span class="text-accent-dark" id="c-total">—</span></div>
                 </div>
                 <!-- Installment / lay-by estimator -->
                 <div class="mt-3 p-3" style="background: var(--grey-50); border-radius: 14px;">

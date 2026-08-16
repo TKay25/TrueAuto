@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const fobInput = $("calcFob");
   const portSel = $("calcPort");
   const freightInput = $("calcFreight");
+  const clearingToggle = $("calcClearing");
 
   const currentPort = () => {
     const key = portSel ? portSel.value : (model.default_port || "");
@@ -39,10 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const duty = cif * model.duty_rate;
     const surtax = cif * model.surtax_rate;
     const vat = (cif + duty + surtax) * model.vat_rate;
-    const clearing = model.clearing_fee + model.inspection_fee;
+    const deliver = clearingToggle ? clearingToggle.checked : true;
+    const clearing = deliver ? model.clearing_fee + model.inspection_fee : 0;
+    const roadTransport = deliver ? transport : 0;
     const total = cif + insurance + duty + surtax + vat
       + model.auction_fees + model.port_handling + clearing
-      + transport + model.commission;
+      + roadTransport + model.commission;
 
     setMoney("c-fob", fob);
     setMoney("c-freight", freight);
@@ -53,9 +56,16 @@ document.addEventListener("DOMContentLoaded", () => {
     setMoney("c-vat", vat);
     setMoney("c-port", model.port_handling);
     setMoney("c-clearing", clearing);
-    setMoney("c-transport", transport);
+    setMoney("c-transport", roadTransport);
     setMoney("c-commission", model.commission);
     setMoney("c-total", total);
+
+    const totalLabel = $("c-total-label");
+    if (totalLabel) totalLabel.textContent = deliver ? "Total delivered to Harare" : "Total at port (Beira/Durban)";
+    ["row-clearing", "row-transport"].forEach((id) => {
+      const el = $(id);
+      if (el) el.style.opacity = deliver ? "" : "0.45";
+    });
 
     const routeLabel = $("c-route");
     if (routeLabel) routeLabel.textContent = `Route: ${portName}${usingPort ? " · " + port.eta : ""}`;
@@ -90,6 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (freightInput) freightInput.disabled = !!portSel.value;
     recalc();
   });
+  if (clearingToggle) clearingToggle.addEventListener("change", recalc);
   ["finDeposit", "finMonths", "finRate"].forEach((id) => {
     const el = $(id);
     if (el) el.addEventListener("input", () => recalc());

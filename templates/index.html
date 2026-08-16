@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="container py-5">
+    <div class="row align-items-center g-5 py-4">
+      <div class="col-lg-6">
+        <span class="badge hero-badge mb-3 reveal"><i class="bi bi-patch-check-fill me-1"></i> Japan 🇯🇵 → Zimbabwe 🇿🇼 · Trusted import partner</span>
+        <h1 class="display-4 fw-black text-white mb-3 reveal">
+          Your Next Car, <span class="grad-text">Imported With Total Transparency</span>
+        </h1>
+        <p class="lead text-white-50 mb-4 reveal">
+          We source quality used cars from Japanese auctions, show you the <strong class="text-white">actual auction price</strong>,
+          charge <strong class="text-white">one fixed commission</strong> — and let you track every stage
+          from auction to your driveway. No middlemen, no hidden mark-ups.
+        </p>
+        <div class="d-flex flex-wrap gap-2 mb-4 reveal">
+          <a href="{{ url_for('routes.catalog') }}" class="btn btn-accent btn-lg rounded-pill px-4">
+            <i class="bi bi-car-front-fill me-1"></i> Browse Cars
+          </a>
+          <a href="{{ url_for('routes.track') }}" class="btn btn-outline-light btn-lg rounded-pill px-4">
+            <i class="bi bi-geo-alt-fill me-1"></i> Track Your Car
+          </a>
+          <a href="{{ url_for('routes.app') }}" class="btn btn-outline-light btn-lg rounded-pill px-4">
+            <i class="bi bi-grid-1x2 me-1"></i> Open the App
+          </a>
+        </div>
+        <div class="hero-stats d-flex gap-3 text-white flex-wrap reveal">
+          <div><div class="fs-3 fw-black" data-count="0" data-prefix="">0</div><small class="text-white-50">Hidden mark-ups</small></div>
+          <div><div class="fs-3 fw-black" data-count="{{ COMMISSION|round|int }}" data-prefix="$">0</div><small class="text-white-50">Fixed commission / car</small></div>
+          <div><div class="fs-3 fw-black" data-count="10">0</div><small class="text-white-50">Live tracking stages</small></div>
+          <div><div class="fs-3 fw-black" data-count="7" data-suffix="d">0</div><small class="text-white-50">Avg. first update</small></div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 d-none d-lg-block reveal">
+        <div class="hero-card p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="fw-bold text-white"><i class="bi bi-truck me-2 text-accent"></i>Live shipment example</span>
+            <span class="badge status-badge status-shipping">Shipping 🚢</span>
+          </div>
+          <div class="timeline-simple">
+            <div class="tl-item done"><span class="tl-dot"></span><span>Quote requested</span></div>
+            <div class="tl-item done"><span class="tl-dot"></span><span>Auction won — $11,500 FOB</span></div>
+            <div class="tl-item done"><span class="tl-dot"></span><span>Deposit verified (EcoCash)</span></div>
+            <div class="tl-item active"><span class="tl-dot"></span><span>On vessel 'MOL Maestro' → Beira</span></div>
+            <div class="tl-item"><span class="tl-dot"></span><span>Customs & duty</span></div>
+            <div class="tl-item"><span class="tl-dot"></span><span>Delivered in Harare</span></div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary">
+            <div class="d-flex align-items-center gap-2">
+              <span class="online-dot"></span>
+              <span class="text-white-50 small">Order <strong class="text-white">TA-2026-0001</strong> · updated 2 min ago</span>
+            </div>
+            <a href="{{ url_for('routes.track') }}" class="small text-accent">Track live <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <!-- Floating notification chip -->
+        <div class="hero-float-note">
+          <i class="bi bi-bell-fill"></i> New update: your car arrived at port — we'll notify you at every stage
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MAKES MARQUEE ===================== -->
+<div class="makes-marquee py-3" style="background: rgba(6,13,26,0.6);">
+  <div class="makes-track">
+    {% for m in ["Toyota", "Honda", "Nissan", "Mazda", "Subaru", "Suzuki", "Mitsubishi", "Daihatsu"] %}
+      <span class="makes-pill"><i class="bi bi-car-front me-1"></i>{{ m }}</span>
+    {% endfor %}
+    {% for m in ["Toyota", "Honda", "Nissan", "Mazda", "Subaru", "Suzuki", "Mitsubishi", "Daihatsu"] %}
+      <span class="makes-pill"><i class="bi bi-car-front me-1"></i>{{ m }}</span>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ===================== TRUST BAR ===================== -->
+<section class="trust-bar py-4">
+  <div class="container">
+    <div class="row text-center g-3">
+      <div class="col-6 col-lg-3 trust-item reveal"><i class="bi bi-receipt-cutoff fs-4 text-accent"></i><div class="fw-semibold small mt-1">Transparent cost breakdown</div></div>
+      <div class="col-6 col-lg-3 trust-item reveal"><i class="bi bi-geo-alt-fill fs-4 text-accent"></i><div class="fw-semibold small mt-1">Live tracking, 10 stages</div></div>
+      <div class="col-6 col-lg-3 trust-item reveal"><i class="bi bi-cash-coin fs-4 text-accent"></i><div class="fw-semibold small mt-1">EcoCash · InnBucks · Bank</div></div>
+      <div class="col-6 col-lg-3 trust-item reveal"><i class="bi bi-shield-check fs-4 text-accent"></i><div class="fw-semibold small mt-1">Auction evidence shared</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURED CARS ===================== -->
+<section class="py-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4 reveal">
+      <div>
+        <span class="section-kicker">Featured inventory</span>
+        <h2 class="fw-black mb-1">Fresh From Japan 🇯🇵</h2>
+        <p class="text-muted mb-0">Every card shows the Japan price <em>and</em> the landed-in-Harare price. No surprises.</p>
+      </div>
+      <a href="{{ url_for('routes.catalog') }}" class="btn btn-outline-brand rounded-pill d-none d-sm-inline-flex">View all cars <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="row g-4">
+      {% for v in featured %}
+        <div class="col-md-6 col-lg-4 reveal">{% include "partials/vehicle_card.html" %}</div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4 d-sm-none">
+      <a href="{{ url_for('routes.catalog') }}" class="btn btn-outline-brand rounded-pill">View all cars <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<section class="section-alt py-5">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="section-kicker">Simple & transparent</span>
+      <h2 class="fw-black">How It Works</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 reveal">
+        <div class="step-card text-center p-4 h-100">
+          <div class="step-num">1</div>
+          <h5 class="fw-bold mt-3">Pick or Request a Car</h5>
+          <p class="text-muted small mb-0">Browse our catalog or tell our chatbot exactly what you want.</p>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="step-card text-center p-4 h-100">
+          <div class="step-num">2</div>
+          <h5 class="fw-bold mt-3">We Bid in Japan</h5>
+          <p class="text-muted small mb-0">Real auction sheets and photos shared. You see the actual FOB price.</p>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="step-card text-center p-4 h-100">
+          <div class="step-num">3</div>
+          <h5 class="fw-bold mt-3">Track to Delivery</h5>
+          <p class="text-muted small mb-0">Live pipeline: shipping, port, customs, clearing — until it's yours.</p>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4 reveal">
+      <a href="{{ url_for('routes.how_it_works') }}" class="btn btn-brand rounded-pill px-4">See the full process <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TRANSPARENCY ===================== -->
+<section class="py-5">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 reveal">
+        <span class="section-kicker">Our promise</span>
+        <h2 class="fw-black mb-3">We show you <span class="grad-text">every cent</span>.</h2>
+        <p class="text-muted mb-4">Auction price, freight, insurance, duty, VAT, clearing, transport — item by item, in writing, with receipts. We earn one clearly-stated commission and nothing else.</p>
+        <div class="d-flex gap-3 flex-wrap">
+          <div class="p-3 border rounded-4" style="background: var(--grey-50);">
+            <div class="fw-black fs-4 text-accent-dark" data-count="{{ (featured[0].fob_price_usd * 0.2)|round|int if featured else 1000 }}" data-prefix="$">0</div>
+            <small class="text-muted">Typical deposit (20% FOB)</small>
+          </div>
+          <div class="p-3 border rounded-4" style="background: var(--grey-50);">
+            <div class="fw-black fs-4" style="color: var(--deep-green);" data-count="100">0</div>
+            <small class="text-muted">% of costs shown with receipts</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 reveal">
+        <div class="card border shadow-sm">
+          <div class="card-body p-4">
+            <div class="cost-breakdown">
+              <div class="cost-row"><span>Japan auction price (FOB)</span><span class="fw-semibold">$11,500.00</span></div>
+              <div class="cost-row"><span>Freight (Japan → port)</span><span class="fw-semibold">$1,400.00</span></div>
+              <div class="cost-row"><span>Insurance (3%)</span><span class="fw-semibold">$387.00</span></div>
+              <div class="cost-row"><span>Auction & export fees</span><span class="fw-semibold">$300.00</span></div>
+              <div class="cost-row"><span>Import duty + surtax + VAT</span><span class="fw-semibold">$7,127.00</span></div>
+              <div class="cost-row"><span>Port, clearing & transport</span><span class="fw-semibold">$1,350.00</span></div>
+              <div class="cost-row commission"><span>True Auto commission (fixed)</span><span class="fw-bold">$850.00</span></div>
+              <div class="cost-row total"><span>Total landed in Harare</span><span class="text-accent-dark">$22,914.00</span></div>
+            </div>
+            <p class="small text-muted mt-3 mb-0"><i class="bi bi-shield-check text-success me-1"></i>Indicative breakdown — verified with our clearing agent before you commit.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section class="section-alt py-5">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="section-kicker">Word on the street</span>
+      <h2 class="fw-black">Customers who tracked the whole journey</h2>
+    </div>
+    <div class="row g-4" id="reviewsGrid">
+      <div class="col-md-4 reveal">
+        <div class="testimonial-card p-4 h-100">
+          <div class="testimonial-stars mb-2">★★★★★</div>
+          <p class="mb-3">"I watched my Harrier go from a Tokyo auction to my driveway in Harare. Every receipt, every stage. My first car bought without anxiety."</p>
+          <div class="d-flex align-items-center gap-2">
+            <div class="avatar-circle" style="background:#0B3B2E;">T</div>
+            <div><strong class="d-block small">T. Moyo</strong><small class="text-muted">Harare · Toyota Harrier</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="testimonial-card p-4 h-100">
+          <div class="testimonial-stars mb-2">★★★★★</div>
+          <p class="mb-3">"The chatbot tracked my order on WhatsApp — I never had to call anyone. That's the level of service other agents can't match."</p>
+          <div class="d-flex align-items-center gap-2">
+            <div class="avatar-circle" style="background:#D81B47;">R</div>
+            <div><strong class="d-block small">R. Ncube</strong><small class="text-muted">Bulawayo · Toyota Vitz</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="testimonial-card p-4 h-100">
+          <div class="testimonial-stars mb-2">★★★★★</div>
+          <p class="mb-3">"I'm in the UK buying for my parents. The USD bank transfer, the itemised invoice, the live tracking — it just works."</p>
+          <div class="d-flex align-items-center gap-2">
+            <div class="avatar-circle" style="background:#123158;">C</div>
+            <div><strong class="d-block small">C. Dube</strong><small class="text-muted">London → Mutare · Nissan X-Trail</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="py-5">
+  <div class="container" style="max-width: 820px;">
+    <div class="text-center mb-4 reveal">
+      <span class="section-kicker">FAQ</span>
+      <h2 class="fw-black">Frequently asked questions</h2>
+    </div>
+    <div class="accordion reveal" id="faqAcc">
+      <div class="accordion-item faq-item">
+        <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#f1">How do you make money?</button></h2>
+        <div id="f1" class="accordion-collapse collapse show" data-bs-parent="#faqAcc"><div class="accordion-body text-muted">One fixed commission of ${{ COMMISSION|money }} per car — published on every quote. Every other cost is passed through at cost with receipts. That's the whole model.</div></div>
+      </div>
+      <div class="accordion-item faq-item">
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">How do I know I'm getting the real auction price?</button></h2>
+        <div id="f2" class="accordion-collapse collapse" data-bs-parent="#faqAcc"><div class="accordion-body text-muted">We share the actual auction sheet and photos before you commit, and the auction price is itemised on your quote and invoice. Nothing is hidden.</div></div>
+      </div>
+      <div class="accordion-item faq-item">
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f3">How can I pay?</button></h2>
+        <div id="f3" class="accordion-collapse collapse" data-bs-parent="#faqAcc"><div class="accordion-body text-muted">EcoCash, InnBucks, OneMoney or bank transfer (USD/RTGS). Submit the reference on your dashboard and we verify it — you'll see it marked verified on your order.</div></div>
+      </div>
+      <div class="accordion-item faq-item">
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f4">How long does delivery take?</button></h2>
+        <div id="f4" class="accordion-collapse collapse" data-bs-parent="#faqAcc"><div class="accordion-body text-muted">Roughly 8–12 weeks: 2–4 weeks at auction, 4–6 weeks shipping, then 1–2 weeks for customs and road transport. You track every stage live — and we notify you at each one.</div></div>
+      </div>
+      <div class="accordion-item faq-item">
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f5">Can I track without an account?</button></h2>
+        <div id="f5" class="accordion-collapse collapse" data-bs-parent="#faqAcc"><div class="accordion-body text-muted">Yes — visit <a href="{{ url_for('routes.track') }}">/track</a> and enter your order number (e.g. TA-2026-0001). Anyone can see the live journey. That's the point.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section class="cta-section py-5">
+  <div class="container">
+    <div class="row align-items-center g-4 reveal">
+      <div class="col-lg-7">
+        <h2 class="fw-black text-white mb-2">Your dream car is one auction away.</h2>
+        <p class="text-white-50 mb-0">Browse the catalog, ask our chatbot, or message us on WhatsApp. We'll handle the rest — transparently.</p>
+      </div>
+      <div class="col-lg-5 d-flex flex-wrap gap-2 text-lg-end">
+        <a href="{{ url_for('routes.catalog') }}" class="btn btn-accent btn-lg rounded-pill px-4">Browse cars <i class="bi bi-arrow-right"></i></a>
+        <a class="btn btn-outline-light btn-lg rounded-pill px-4" href="https://wa.me/263771234567" target="_blank"><i class="bi bi-whatsapp me-1"></i> WhatsApp us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-float-note {
+    margin-top: 1rem;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(61, 220, 132, 0.12);
+    border: 1px solid rgba(61, 220, 132, 0.3);
+    color: #7fe8ab;
+    font-size: 0.82rem;
+    border-radius: 50rem;
+    padding: 0.5rem 1rem;
+    backdrop-filter: blur(6px);
+  }
+  .avatar-circle {
+    width: 38px; height: 38px; border-radius: 50%;
+    color: #fff; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Load real, approved customer reviews (falls back to the static ones)
+  (async () => {
+    try {
+      const data = await apiFetch("/api/reviews");
+      if (data.reviews && data.reviews.length) {
+        const grid = document.getElementById("reviewsGrid");
+        grid.innerHTML = data.reviews.slice(0, 3).map((r) => `
+          <div class="col-md-4 reveal in">
+            <div class="testimonial-card p-4 h-100">
+              <div class="testimonial-stars mb-2">${"★".repeat(r.rating)}${"☆".repeat(Math.max(5 - r.rating, 0))}</div>
+              <p class="mb-3">"${escapeHtml(r.comment)}"</p>
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-circle" style="background:#0B3B2E;">${escapeHtml((r.customer || "T")[0])}</div>
+                <div><strong class="d-block small">${escapeHtml(r.customer)}</strong><small class="text-muted">${escapeHtml(r.vehicle)} · verified buyer</small></div>
+              </div>
+            </div>
+          </div>`).join("");
+        initReveal();
+      }
+    } catch (_) { /* keep static */ }
+  })();
+</script>
+{% endblock %}

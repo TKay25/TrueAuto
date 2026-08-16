@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Compare Cars — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="page-hero py-5">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-kicker">Compare</span>
+      <h1 class="fw-black text-white mb-2">Side-by-side <span class="grad-text">Comparison</span></h1>
+      <p class="text-white-50 mx-auto mb-0" style="max-width: 560px;">Compare up to 4 cars — specs and full landed cost — to make the right call.</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-4">
+  <div class="container">
+    <div id="compareEmpty" class="text-center py-5 d-none">
+      <i class="bi bi-columns-gap display-3 text-muted"></i>
+      <h5 class="fw-bold mt-3">Nothing to compare yet</h5>
+      <p class="text-muted">Use the <strong>＋ Compare</strong> button on any car in the catalog to add it here.</p>
+      <a href="{{ url_for('routes.catalog') }}" class="btn btn-accent rounded-pill">Browse cars <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+    <div id="compareWrap" class="d-none">
+      <div class="card border shadow-sm">
+        <div class="table-responsive">
+          <table class="table align-middle compare-table mb-0">
+            <thead><tr><th style="min-width:160px;">Specification</th><th id="compareHead"></th></tr></thead>
+            <tbody id="compareBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <a href="{{ url_for('routes.catalog') }}" class="btn btn-outline-brand rounded-pill"><i class="bi bi-plus-lg me-1"></i> Add more cars</a>
+        <button class="btn btn-outline-danger rounded-pill ms-2" id="clearCompare"><i class="bi bi-trash me-1"></i> Clear all</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .compare-table th, .compare-table td { text-align: center; vertical-align: middle; }
+  .compare-table td:first-child { text-align: left; font-weight: 600; color: var(--grey-600); background: var(--grey-50); }
+  .compare-table td { border-right: 1px solid var(--grey-100); }
+  .compare-img { height: 130px; border-radius: 12px; overflow: hidden; }
+  .remove-compare { cursor: pointer; }
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+<script>document.body.dataset.page = "compare";</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Vehicles — Admin{% endblock %}
+{% block content %}
+<section class="py-4">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-black mb-0">Vehicles</h2>
+      <a href="{{ url_for('routes.admin_vehicle_new') }}" class="btn btn-accent rounded-pill"><i class="bi bi-plus-lg me-1"></i> New vehicle</a>
+    </div>
+    <div class="card border shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead><tr><th>Vehicle</th><th>Year</th><th>FOB</th><th>Status</th><th>Featured</th><th class="text-end">Actions</th></tr></thead>
+          <tbody>
+            {% for v in vehicles %}
+            <tr>
+              <td class="fw-semibold">{{ v.make }} {{ v.model }}</td>
+              <td>{{ v.year }}</td>
+              <td>${{ v.fob_price_usd|money }}</td>
+              <td><span class="badge status-badge status-{{ v.status }}">{{ v.status }}</span></td>
+              <td>{% if v.featured %}<i class="bi bi-star-fill text-warning"></i>{% else %}—{% endif %}</td>
+              <td class="text-end">
+                <a href="{{ url_for('routes.admin_vehicle_edit', vehicle_id=v.id) }}" class="btn btn-sm btn-outline-brand rounded-pill">Edit</a>
+                <form method="post" action="{{ url_for('routes.admin_vehicle_delete', vehicle_id=v.id) }}" class="d-inline"
+                      onsubmit="return confirm('Delete this vehicle permanently?')">
+                  <button class="btn btn-sm btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
+                </form>
+              </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="text-center text-muted py-4">No vehicles yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

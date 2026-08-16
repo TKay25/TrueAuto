@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if v else 'New' }} Vehicle — Admin{% endblock %}
+{% block content %}
+<section class="py-4">
+  <div class="container">
+    <div class="mb-3"><a href="{{ url_for('routes.admin_vehicles') }}" class="btn btn-sm btn-outline-brand rounded-pill"><i class="bi bi-arrow-left"></i> Vehicles</a></div>
+    <h2 class="fw-black mb-4">{{ 'Edit vehicle' if v else 'New vehicle' }}</h2>
+
+    <div class="card border shadow-sm">
+      <div class="card-body p-4 p-md-5">
+        <form method="post">
+          <div class="row g-3">
+            <div class="col-md-4"><label class="form-label fw-semibold">Make</label>
+              <input name="make" class="form-control" value="{{ v.make if v else '' }}" required></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Model</label>
+              <input name="model" class="form-control" value="{{ v.model if v else '' }}" required></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Year</label>
+              <input type="number" name="year" class="form-control" value="{{ v.year if v else 2016 }}" required></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Mileage (km)</label>
+              <input type="number" name="mileage_km" class="form-control" value="{{ v.mileage_km if v else 50000 }}" required></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Transmission</label>
+              <select name="transmission" class="form-select">
+                <option {% if not v or v.transmission == 'Automatic' %}selected{% endif %}>Automatic</option>
+                <option {% if v and v.transmission == 'Manual' %}selected{% endif %}>Manual</option>
+              </select></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Fuel</label>
+              <select name="fuel" class="form-select">
+                <option {% if not v or v.fuel == 'Petrol' %}selected{% endif %}>Petrol</option>
+                <option {% if v and v.fuel == 'Diesel' %}selected{% endif %}>Diesel</option>
+                <option {% if v and v.fuel == 'Hybrid' %}selected{% endif %}>Hybrid</option>
+              </select></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Engine (cc)</label>
+              <input type="number" name="engine_cc" class="form-control" value="{{ v.engine_cc if v and v.engine_cc else '' }}"></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Auction grade</label>
+              <input name="auction_grade" class="form-control" value="{{ v.auction_grade if v and v.auction_grade else '' }}" placeholder="e.g. 4.0"></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Auction location</label>
+              <input name="auction_location" class="form-control" value="{{ v.auction_location if v and v.auction_location else '' }}" placeholder="e.g. USS Tokyo"></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">FOB price (USD)</label>
+              <input type="number" step="0.01" name="fob_price_usd" class="form-control" value="{{ v.fob_price_usd if v else 5000 }}" required></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Freight (USD)</label>
+              <input type="number" step="0.01" name="freight_usd" class="form-control" value="{{ v.freight_usd if v else 0 }}"></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Status</label>
+              <select name="status" class="form-select">
+                {% for s in ["available", "reserved", "sold"] %}
+                  <option value="{{ s }}" {% if v and v.status == s %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+              </select></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Featured</label>
+              <select name="featured" class="form-select">
+                <option value="">No</option>
+                <option value="1" {% if v and v.featured %}selected{% endif %}>Yes</option>
+              </select></div>
+            <div class="col-12"><label class="form-label fw-semibold">Description</label>
+              <textarea name="description" class="form-control" rows="3">{{ v.description if v else '' }}</textarea></div>
+            <div class="col-12"><label class="form-label fw-semibold">Auction sheet URL</label>
+              <input name="auction_sheet" class="form-control" value="{{ v.auction_sheet if v and v.auction_sheet else '' }}"></div>
+            <div class="col-12"><label class="form-label fw-semibold">Photos (comma-separated URLs)</label>
+              <input name="photos" class="form-control" value="{{ v.photo_list()|join(', ') if v else '' }}"></div>
+          </div>
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-accent rounded-pill px-4">{{ 'Save changes' if v else 'Add vehicle' }}</button>
+            <a href="{{ url_for('routes.admin_vehicles') }}" class="btn btn-outline-brand rounded-pill">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

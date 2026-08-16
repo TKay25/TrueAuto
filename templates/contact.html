@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Contact Us — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-kicker">Contact</span>
+      <h1 class="fw-black">Talk to a Real Person</h1>
+      <p class="text-muted">We're Zimbabwean, local, and happy to help. Reach us any way you like.</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-4">
+        <div class="card border shadow-sm h-100">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-3">Get in touch</h5>
+            <ul class="list-unstyled vstack gap-3 mb-4">
+              <li class="d-flex gap-3">
+                <span class="stat-icon" style="background: rgba(10,46,30,0.1); color: var(--deep-green);"><i class="bi bi-whatsapp"></i></span>
+                <div><small class="text-muted">WhatsApp (fastest)</small><div class="fw-semibold">{{ CONTACT }}</div></div>
+              </li>
+              <li class="d-flex gap-3">
+                <span class="stat-icon" style="background: rgba(192,16,46,0.1); color: var(--crimson);"><i class="bi bi-envelope"></i></span>
+                <div><small class="text-muted">Email</small><div class="fw-semibold">{{ CONTACT_EMAIL }}</div></div>
+              </li>
+              <li class="d-flex gap-3">
+                <span class="stat-icon" style="background: rgba(11,27,51,0.1); color: var(--deep-blue-2);"><i class="bi bi-geo-alt"></i></span>
+                <div><small class="text-muted">Location</small><div class="fw-semibold">{{ ADDRESS }}</div></div>
+              </li>
+              <li class="d-flex gap-3">
+                <span class="stat-icon" style="background: rgba(255,193,7,0.15); color: #b8860b;"><i class="bi bi-clock"></i></span>
+                <div><small class="text-muted">Hours</small><div class="fw-semibold">{{ SUPPORT_HOURS }}</div></div>
+              </li>
+            </ul>
+            <div class="d-grid">
+              <a class="btn btn-brand rounded-pill" href="https://wa.me/263771234567" target="_blank"><i class="bi bi-whatsapp me-1"></i> Chat on WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card border shadow-sm h-100">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-3">Send us a message</h5>
+            <form id="contactForm">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Your name</label>
+                  <input type="text" class="form-control" id="contactName" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Phone / WhatsApp</label>
+                  <input type="text" class="form-control" id="contactPhone" placeholder="+263 7x xxx xxxx">
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Message</label>
+                  <textarea class="form-control" id="contactMsg" rows="5" placeholder="Tell us what car you want, or ask us anything…" required></textarea>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-accent rounded-pill px-4"><i class="bi bi-send me-1"></i> Send message</button>
+                </div>
+              </div>
+            </form>
+            <p class="small text-muted mt-3 mb-0">
+              <i class="bi bi-info-circle me-1"></i>Messages open a WhatsApp chat with our team so you get a fast reply.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById("contactForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = document.getElementById("contactName").value.trim();
+  const phone = document.getElementById("contactPhone").value.trim();
+  const msg = document.getElementById("contactMsg").value.trim();
+  const text = encodeURIComponent(`Hi True Auto Zim!\n\nName: ${name}\nPhone: ${phone}\n\n${msg}`);
+  window.open(`https://wa.me/263771234567?text=${text}`, "_blank");
+  showToast("Opening WhatsApp…", "info", "Almost there");
+});
+</script>
+{% endblock %}

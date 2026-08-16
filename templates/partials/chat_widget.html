@@ -1,0 +1,33 @@
+<!-- Chatbot widget (floating). Logic lives in static/js/chatbot.js -->
+<div class="chat-fab" id="chatFab" title="Chat with us">
+  <i class="bi bi-chat-dots-fill" id="chatFabIcon"></i>
+</div>
+
+<div class="chat-panel card shadow-lg" id="chatPanel" aria-hidden="true">
+  <div class="chat-header">
+    <div class="d-flex align-items-center gap-2">
+      <div class="chat-avatar"><i class="bi bi-robot"></i></div>
+      <div>
+        <div class="fw-bold small">True Auto Assistant</div>
+        <div class="chat-online"><span class="online-dot"></span> Online — replies instantly</div>
+      </div>
+    </div>
+    <button class="btn btn-sm text-white" id="chatClose"><i class="bi bi-x-lg"></i></button>
+  </div>
+  <div class="chat-body" id="chatBody">
+    <div class="chat-msg bot">
+      👋 Hi! I'm the True Auto Zim assistant.
+      Ask me about our cars, pricing, payments — or send your order number (e.g. TA-2026-0001) to track your car live.
+    </div>
+  </div>
+  <div class="chat-quick d-flex gap-1 px-2 pb-1 flex-wrap" id="chatQuick">
+    <button class="btn btn-sm chat-chip" data-q="How does it work?">How it works</button>
+    <button class="btn btn-sm chat-chip" data-q="How much is the commission?">Pricing</button>
+    <button class="btn btn-sm chat-chip" data-q="What payment methods do you accept?">Payments</button>
+    <button class="btn btn-sm chat-chip" data-q="How long does delivery take?">Delivery time</button>
+  </div>
+  <div class="chat-input-wrap d-flex gap-1 p-2">
+    <input type="text" class="form-control form-control-sm" id="chatInput" placeholder="Type your message…" autocomplete="off">
+    <button class="btn btn-accent btn-sm" id="chatSend"><i class="bi bi-send-fill"></i></button>
+  </div>
+</div>

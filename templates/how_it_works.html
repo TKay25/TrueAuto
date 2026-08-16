@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}How It Works — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="page-hero py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-kicker">How It Works</span>
+      <h1 class="fw-black text-white">From Japanese Auction to <span class="grad-text">Your Driveway</span></h1>
+      <p class="text-white-50 mx-auto" style="max-width: 640px;">
+        One transparent process, ten live tracking stages. Here's exactly what happens
+        between your order and your new car.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <div class="card border shadow-sm">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-signpost-2 text-accent me-2"></i>The 10-stage journey</h5>
+            {% for s in stages %}
+              <div class="tracking-step {{ 'done' if loop.index < 4 else ('active' if loop.index == 4 else 'upcoming') }} mb-3">
+                <div class="track-icon">{{ s.icon }}</div>
+                <div>
+                  <div class="fw-semibold">{{ loop.index }}. {{ s.label }}</div>
+                  <small class="text-muted">{{ s.desc }}</small>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="step-card p-4 h-100">
+              <div class="step-num" style="width: 44px; height: 44px; font-size: 1rem;">1</div>
+              <h5 class="fw-bold mt-3">Choose or request</h5>
+              <p class="text-muted small mb-0">Pick from our catalog, or tell our chatbot the make/model/budget you want and we'll source it from Japanese auctions.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="step-card p-4 h-100">
+              <div class="step-num" style="width: 44px; height: 44px; font-size: 1rem;">2</div>
+              <h5 class="fw-bold mt-3">We bid transparently</h5>
+              <p class="text-muted small mb-0">We bid at auction with your approval. You get the real auction sheet, grade and photos — and the actual FOB price.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="step-card p-4 h-100">
+              <div class="step-num" style="width: 44px; height: 44px; font-size: 1rem;">3</div>
+              <h5 class="fw-bold mt-3">Pay your deposit</h5>
+              <p class="text-muted small mb-0">EcoCash, InnBucks, OneMoney or bank transfer. Submit the reference on your dashboard — verified by our team, shown on your order.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="step-card p-4 h-100">
+              <div class="step-num" style="width: 44px; height: 44px; font-size: 1rem;">4</div>
+              <h5 class="fw-bold mt-3">Track every stage live</h5>
+              <p class="text-muted small mb-0">Shipping, arrival at Beira/Durban, customs, clearing, road transport to Harare. Watch it happen in real time — even on WhatsApp.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="step-card p-4 h-100">
+              <div class="step-num" style="width: 44px; height: 44px; font-size: 1rem;">5</div>
+              <h5 class="fw-bold mt-3">Clear with ZIMRA</h5>
+              <p class="text-muted small mb-0">Our clearing agent handles duty, VAT and inspection. You see the actual receipts — nothing hidden.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="step-card p-4 h-100">
+              <div class="step-num" style="width: 44px; height: 44px; font-size: 1rem;">6</div>
+              <h5 class="fw-bold mt-3">Drive away</h5>
+              <p class="text-muted small mb-0">We deliver in Harare (or arrange transport anywhere in Zimbabwe). Pay the balance on delivery.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mt-4 cta-mini">
+          <div class="card-body p-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+              <h5 class="fw-bold text-white mb-1">Ready to find your car?</h5>
+              <p class="text-white-50 mb-0 small">Browse the catalog or ask our assistant.</p>
+            </div>
+            <div class="d-flex gap-2">
+              <a href="{{ url_for('routes.catalog') }}" class="btn btn-accent rounded-pill">Browse cars <i class="bi bi-arrow-right"></i></a>
+              <button class="btn btn-outline-light rounded-pill" onclick="window.chatOpen && window.chatOpen()"><i class="bi bi-chat-dots"></i> Chat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

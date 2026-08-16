@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Our Transparency Promise — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-kicker">Our Promise</span>
+      <h1 class="fw-black">Transparency Is <span class="text-accent">The Whole Business Model</span></h1>
+      <p class="text-muted mx-auto" style="max-width: 680px;">
+        Zimbabwean car buyers have been burned by agents who hide mark-ups and disappear.
+        We built True Auto Zim to be the opposite: every cost shown, every stage trackable,
+        every payment verifiable.
+      </p>
+    </div>
+
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="card border shadow-sm h-100">
+          <div class="card-body p-4">
+            <div class="stat-icon mb-3" style="background: rgba(192,16,46,0.1); color: var(--crimson);"><i class="bi bi-receipt-cutoff"></i></div>
+            <h5 class="fw-bold">1. Itemised costing</h5>
+            <p class="text-muted small mb-0">Auction price, freight, insurance, duty, VAT, clearing, transport — item by item, in writing, before you pay a cent.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border shadow-sm h-100">
+          <div class="card-body p-4">
+            <div class="stat-icon mb-3" style="background: rgba(10,46,30,0.1); color: var(--deep-green);"><i class="bi bi-geo-alt-fill"></i></div>
+            <h5 class="fw-bold">2. Live tracking</h5>
+            <p class="text-muted small mb-0">Ten stages from auction to delivery, each with a timestamp and note. Watch your car move on the website or WhatsApp.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border shadow-sm h-100">
+          <div class="card-body p-4">
+            <div class="stat-icon mb-3" style="background: rgba(11,27,51,0.1); color: var(--deep-blue-2);"><i class="bi bi-shield-check"></i></div>
+            <h5 class="fw-bold">3. Evidence at every step</h5>
+            <p class="text-muted small mb-0">Auction sheets, shipping receipts, duty receipts, inspection reports. Proof is attached to every milestone.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <h2 class="fw-black mb-3">What makes us different</h2>
+        <ul class="list-unstyled vstack gap-3">
+          <li class="d-flex gap-3">
+            <span class="stat-icon" style="background: rgba(192,16,46,0.1); color: var(--crimson); flex-shrink:0;"><i class="bi bi-x-circle"></i></span>
+            <div><strong class="d-block">No hidden mark-ups</strong><span class="text-muted small">Other agents buy at auction and add a fat margin. We charge one fixed commission — and show you the actual auction price.</span></div>
+          </li>
+          <li class="d-flex gap-3">
+            <span class="stat-icon" style="background: rgba(10,46,30,0.1); color: var(--deep-green); flex-shrink:0;"><i class="bi bi-phone"></i></span>
+            <div><strong class="d-block">We meet you where you are</strong><span class="text-muted small">WhatsApp, EcoCash, the website — built for how Zimbabweans actually do business.</span></div>
+          </li>
+          <li class="d-flex gap-3">
+            <span class="stat-icon" style="background: rgba(11,27,51,0.1); color: var(--deep-blue-2); flex-shrink:0;"><i class="bi bi-people"></i></span>
+            <div><strong class="d-block">We're accountable in Zim</strong><span class="text-muted small">A Zimbabwean company with local contacts you can visit, call or WhatsApp. Not a faceless website.</span></div>
+          </li>
+        </ul>
+      </div>
+      <div class="col-lg-6">
+        <div class="card cta-mini border-0">
+          <div class="card-body p-4 p-md-5">
+            <h4 class="fw-bold text-white mb-3">Our word, in writing:</h4>
+            <blockquote class="text-white-50 small mb-4" style="border-left: 3px solid var(--crimson-soft); padding-left: 1rem;">
+              "You will see every cost, every receipt and every stage of your car's journey.
+              We earn one clearly-stated commission — and nothing else, ever."
+            </blockquote>
+            <div class="d-flex flex-wrap gap-2">
+              <a href="{{ url_for('routes.track') }}" class="btn btn-accent rounded-pill"><i class="bi bi-geo-alt me-1"></i>Track a car now</a>
+              <button class="btn btn-outline-light rounded-pill" onclick="window.chatOpen && window.chatOpen()"><i class="bi bi-chat-dots me-1"></i>Ask us anything</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+{% block title %}{{ v.full_title }} — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="py-4">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="{{ url_for('routes.catalog') }}">Catalog</a></li>
+        <li class="breadcrumb-item active">{{ v.full_title }}</li>
+      </ol>
+    </nav>
+
+    <div class="row g-4">
+      <!-- Gallery / main image -->
+      <div class="col-lg-7">
+        {% set photos = v.photo_list() %}
+        <div class="card vehicle-card border-0 overflow-hidden shadow-sm">
+          <div class="vehicle-img rounded-top" style="height: 380px;">
+            {% if photos %}
+              <img src="{{ photos[0] }}" alt="{{ v.full_title }}" id="mainPhoto">
+            {% else %}
+              <div class="vehicle-placeholder d-flex flex-column align-items-center justify-content-center">
+                <i class="bi bi-car-front-fill" style="font-size: 5rem;"></i>
+                <span class="placeholder-text fs-4">{{ v.make }} {{ v.model }}</span>
+                <span class="badge grade-badge mt-3 px-3 py-2" style="font-size: 0.9rem;">{{ v.auction_grade or "—" }} Auction Grade</span>
+              </div>
+            {% endif %}
+            <span class="badge position-absolute top-0 start-0 m-3 status-badge status-{{ v.status }} fs-6">{{ v.status|capitalize }}</span>
+            {% if v.auction_grade and photos %}
+              <span class="badge grade-badge position-absolute top-0 end-0 m-3 px-3 py-2">{{ v.auction_grade }} ★</span>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if photos|length > 1 %}
+        <div class="d-flex gap-2 mt-2 flex-wrap">
+          {% for p in photos %}
+            <div class="thumb" data-src="{{ p }}" style="width:76px;height:56px;border-radius:10px;overflow:hidden;cursor:pointer;border:2px solid var(--grey-200);">
+              <img src="{{ p }}" alt="Photo {{ loop.index }}" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="card border mt-4 shadow-sm">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-3">Vehicle Details</h5>
+            <div class="row g-3">
+              <div class="col-6 col-md-4 detail-chip"><i class="bi bi-calendar3 text-accent"></i><div><small class="text-muted">Year</small><div class="fw-semibold">{{ v.year }}</div></div></div>
+              <div class="col-6 col-md-4 detail-chip"><i class="bi bi-speedometer2 text-accent"></i><div><small class="text-muted">Mileage</small><div class="fw-semibold">{{ v.mileage_km|num }} km</div></div></div>
+              <div class="col-6 col-md-4 detail-chip"><i class="bi bi-gear text-accent"></i><div><small class="text-muted">Transmission</small><div class="fw-semibold">{{ v.transmission }}</div></div></div>
+              <div class="col-6 col-md-4 detail-chip"><i class="bi bi-fuel-pump text-accent"></i><div><small class="text-muted">Fuel</small><div class="fw-semibold">{{ v.fuel }}</div></div></div>
+              <div class="col-6 col-md-4 detail-chip"><i class="bi bi-cpu text-accent"></i><div><small class="text-muted">Engine</small><div class="fw-semibold">{{ v.engine_cc ~ " cc" if v.engine_cc else "—" }}</div></div></div>
+              <div class="col-6 col-md-4 detail-chip"><i class="bi bi-geo-alt text-accent"></i><div><small class="text-muted">Auction</small><div class="fw-semibold">{{ v.auction_location or "Japan" }}</div></div></div>
+            </div>
+            {% if v.description %}
+              <hr>
+              <p class="text-muted mb-0">{{ v.description }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if v.auction_sheet %}
+        <div class="card border mt-4 shadow-sm">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div><i class="bi bi-file-earmark-text text-accent fs-4 me-2"></i><strong>Auction sheet available</strong></div>
+            <a href="{{ v.auction_sheet }}" target="_blank" class="btn btn-outline-brand btn-sm rounded-pill">View evidence <i class="bi bi-box-arrow-up-right"></i></a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Cost breakdown / CTA -->
+      <div class="col-lg-5">
+        <div class="card border shadow-lg sticky-lg-top rounded-4" style="top: 90px;">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h3 class="fw-black mb-0">{{ v.year }} {{ v.make }} {{ v.model }}</h3>
+            </div>
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div><span class="text-muted">Japan FOB:</span> <strong>${{ v.fob_price_usd|money }}</strong>
+                <div class="small text-muted">≈ ¥{{ (v.fob_price_usd * JPY_PER_USD)|money }} @ auction</div>
+              </div>
+              <div class="d-flex gap-1">
+                <button class="wish-btn" id="detailWish" style="position:static;" data-vehicle="{{ v.id }}" title="Save to my list" aria-label="Save"><i class="bi bi-heart"></i></button>
+                <button class="cmp-btn align-self-center" data-compare="{{ v.id }}" onclick="CompareToggle({{ v.id }}, this)">Compare</button>
+              </div>
+            </div>
+
+            <h6 class="fw-bold mb-2"><i class="bi bi-receipt text-accent me-1"></i>Full landed cost — no hidden fees</h6>
+            <div class="cost-breakdown p-3" style="background: var(--grey-50); border-radius: 14px;">
+              <div class="cost-row"><span>Japan auction price (FOB)</span><span class="fw-semibold">${{ v.fob_price_usd|money }}</span></div>
+              <div class="cost-row"><span>Freight (Japan → port)</span><span class="fw-semibold">${{ cost.freight|money }}</span></div>
+              <div class="cost-row"><span>Insurance</span><span class="fw-semibold">${{ cost.insurance|money }}</span></div>
+              <div class="cost-row"><span>Auction & export fees</span><span class="fw-semibold">${{ cost.auction_fees|money }}</span></div>
+              <div class="cost-row"><span>Import duty</span><span class="fw-semibold">${{ cost.duty|money }}</span></div>
+              <div class="cost-row"><span>Surtax</span><span class="fw-semibold">${{ cost.surtax|money }}</span></div>
+              <div class="cost-row"><span>VAT (15%)</span><span class="fw-semibold">${{ cost.vat|money }}</span></div>
+              <div class="cost-row"><span>Port handling</span><span class="fw-semibold">${{ cost.port_handling|money }}</span></div>
+              <div class="cost-row"><span>Clearing & inspection</span><span class="fw-semibold">${{ (cost.clearing + cost.inspection)|money }}</span></div>
+              <div class="cost-row"><span>Transport to Harare</span><span class="fw-semibold">${{ cost.transport|money }}</span></div>
+              <div class="cost-row commission"><span>True Auto commission (fixed)</span><span class="fw-bold">${{ cost.commission|money }}</span></div>
+              <div class="cost-row total"><span>Total landed in Harare</span><span class="text-accent-dark">${{ cost.total|money }}</span></div>
+            </div>
+
+            <!-- Import route selector (Beira / Durban) -->
+            <div class="mt-3 p-3" style="background: var(--grey-50); border-radius: 14px;">
+              <h6 class="fw-bold mb-2"><i class="bi bi-geo-alt text-accent me-1"></i>Choose your import route</h6>
+              <div class="d-flex gap-2 flex-wrap">
+                <button class="btn btn-sm route-btn active" data-port="beira">Beira 🇲🇿</button>
+                <button class="btn btn-sm route-btn" data-port="durban">Durban 🇿🇦</button>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <span class="text-muted small">Landed via <strong id="routeLabel">Beira</strong></span>
+                <strong class="text-accent-dark fs-5" id="routeTotal">${{ ports.beira.total|money }}</strong>
+              </div>
+              <div class="small text-muted" id="routeMeta">Freight ${{ ports.beira.freight|money }} · Transport ${{ ports.beira.transport|money }} · {{ port_options.beira.eta }}</div>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+              {% if v.status == "available" %}
+                {% if current_user.is_authenticated %}
+                  <a href="{{ url_for('routes.checkout', slug=v.slug) }}" class="btn btn-accent btn-lg rounded-pill">
+                    <i class="bi bi-bag-check me-1"></i> Order This Car
+                  </a>
+                {% else %}
+                  <a href="{{ url_for('routes.app') }}" class="btn btn-accent btn-lg rounded-pill">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Log in to Order
+                  </a>
+                {% endif %}
+              {% else %}
+                <button class="btn btn-secondary btn-lg rounded-pill" disabled>Currently {{ v.status }}</button>
+              {% endif %}
+              <a class="btn btn-outline-brand rounded-pill" href="https://wa.me/263771234567" target="_blank">
+                <i class="bi bi-whatsapp text-success me-1"></i> Ask on WhatsApp
+              </a>
+              <button class="btn btn-outline-brand rounded-pill" onclick="window.chatOpen && window.chatOpen()">
+                <i class="bi bi-chat-dots me-1"></i> Chat with our assistant
+              </button>
+            </div>
+
+            <div class="mt-3 small text-muted">
+              <i class="bi bi-shield-check text-success me-1"></i> Every cost verified with our clearing agent. Duty rates are indicative — final ZIMRA quote confirmed before you commit.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enquiry form (BeForward-style) -->
+    <div class="row justify-content-center mt-5">
+      <div class="col-lg-9">
+        <div class="card inquiry-card">
+          <div class="card-body p-4 p-md-5">
+            <div class="row align-items-center g-4">
+              <div class="col-lg-6">
+                <span class="section-kicker">Enquire about this car</span>
+                <h3 class="fw-black mb-2">Ask about the {{ v.make }} {{ v.model }}</h3>
+                <p class="text-muted small mb-0">Deposit, timeline, final duty, extra photos — send your details and our team will reply fast (on WhatsApp too).</p>
+              </div>
+              <div class="col-lg-6">
+                <form id="inquiryForm" class="vstack gap-2">
+                  <input type="hidden" id="inqVehicle" value="{{ v.id }}">
+                  <div class="row g-2">
+                    <div class="col-md-6"><input type="text" id="inqName" class="form-control" placeholder="Your name" required></div>
+                    <div class="col-md-6"><input type="text" id="inqPhone" class="form-control" placeholder="Phone / WhatsApp" required></div>
+                  </div>
+                  <input type="email" id="inqEmail" class="form-control" placeholder="Email (optional)">
+                  <textarea id="inqMessage" class="form-control" rows="3" placeholder="Your question (optional)"></textarea>
+                  <button type="submit" class="btn btn-brand rounded-pill"><i class="bi bi-send me-1"></i> Send enquiry</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if similar %}
+    <section class="mt-5">
+      <div class="d-flex justify-content-between align-items-end mb-3 reveal">
+        <div>
+          <span class="section-kicker">You may also like</span>
+          <h3 class="fw-black mb-0">Similar cars</h3>
+        </div>
+        <a href="{{ url_for('routes.catalog') }}" class="small fw-semibold text-accent-dark">View all <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <div class="row g-4">
+        {% for s in similar %}
+          <div class="col-md-4 reveal">{% include "partials/vehicle_card.html" %}</div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .detail-chip { display: flex; align-items: center; gap: 0.7rem; }
+  .detail-chip > i { font-size: 1.2rem; }
+  .thumb.active { border-color: var(--crimson) !important; }
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Simple gallery: click a thumbnail to swap the main photo
+  document.querySelectorAll(".thumb").forEach((t) => {
+    t.addEventListener("click", () => {
+      document.querySelectorAll(".thumb").forEach((x) => x.classList.remove("active"));
+      t.classList.add("active");
+      const main = document.getElementById("mainPhoto");
+      if (main) main.src = t.dataset.src;
+    });
+  });
+
+  // Recently viewed
+  try {
+    const rec = JSON.parse(localStorage.getItem("trueauto_recent") || "[]");
+    const entry = { id: {{ v.id }}, title: "{{ v.full_title }}", slug: "{{ v.slug }}" };
+    const arr = [entry].concat(rec.filter((r) => r.id !== {{ v.id }})).slice(0, 6);
+    localStorage.setItem("trueauto_recent", JSON.stringify(arr));
+  } catch (_) {}
+
+  // Wishlist heart on this page
+  const wishBtn = document.getElementById("detailWish");
+  (async () => {
+    try {
+      const me = await apiFetch("/api/me");
+      if (!me.user) { wishBtn.style.display = "none"; return; }
+      const d = await apiFetch("/api/wishlist/ids");
+      if (d.ids.includes({{ v.id }})) {
+        wishBtn.classList.add("active");
+        wishBtn.innerHTML = '<i class="bi bi-heart-fill"></i>';
+      }
+    } catch (_) { wishBtn.style.display = "none"; }
+  })();
+  wishBtn.addEventListener("click", async () => {
+    try {
+      const me = await apiFetch("/api/me");
+      if (!me.user) { showToast("Please log in to save cars.", "info"); setTimeout(() => { location.href = "/app"; }, 1000); return; }
+      if (wishBtn.classList.contains("active")) {
+        await apiFetch("/api/wishlist/{{ v.id }}", { method: "DELETE" });
+        wishBtn.classList.remove("active");
+        wishBtn.innerHTML = '<i class="bi bi-heart"></i>';
+        showToast("Removed from your list.", "info");
+      } else {
+        await apiFetch("/api/wishlist", { method: "POST", body: { vehicle_id: {{ v.id }} } });
+        wishBtn.classList.add("active");
+        wishBtn.innerHTML = '<i class="bi bi-heart-fill"></i>';
+        showToast("Saved to your list! ❤️", "success");
+      }
+    } catch (err) { showToast(err.message, "danger"); }
+  });
+
+  // Import route selector
+  const PORT_DATA = {{ ports_json | tojson }};
+  const PORT_META = {{ port_options | tojson }};
+  document.querySelectorAll(".route-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".route-btn").forEach((x) => x.classList.remove("active"));
+      btn.classList.add("active");
+      const p = PORT_DATA[btn.dataset.port] || {};
+      const meta = PORT_META[btn.dataset.port] || {};
+      document.getElementById("routeLabel").textContent = meta.label || btn.dataset.port;
+      document.getElementById("routeTotal").textContent = fmtMoney(p.total);
+      document.getElementById("routeMeta").textContent =
+        `Freight ${fmtMoney(p.freight)} · Transport ${fmtMoney(p.transport)} · ${meta.eta || ""}`;
+    });
+  });
+
+  // Enquiry form
+  document.getElementById("inquiryForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      await apiFetch("/api/inquiries", {
+        method: "POST",
+        body: {
+          vehicle_id: {{ v.id }},
+          name: document.getElementById("inqName").value,
+          phone: document.getElementById("inqPhone").value,
+          email: document.getElementById("inqEmail").value,
+          message: document.getElementById("inqMessage").value,
+        },
+      });
+      document.getElementById("inquiryForm").reset();
+      showToast("Enquiry sent! We'll get back to you shortly.", "success");
+    } catch (err) { showToast(err.message, "danger", "Could not send"); }
+  });
+</script>
+{% endblock %}

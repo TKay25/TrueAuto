@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Browse by Brand — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="page-hero py-5">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-kicker">Browse by brand</span>
+      <h1 class="fw-black text-white mb-2">Shop by <span class="grad-text">Make</span></h1>
+      <p class="text-white-50 mx-auto mb-0" style="max-width: 560px;">Pick a brand and explore the Japanese-market inventory we can import for you — each with the real auction price and landed cost.</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      {% for m in makes %}
+        <div class="col-6 col-md-4 col-lg-3 reveal">
+          <a href="{{ url_for('routes.catalog', make=m.name) }}" class="text-decoration-none">
+            <div class="card border shadow-sm brand-card h-100">
+              <div class="card-body text-center p-4">
+                <div class="brand-icon mx-auto mb-3"><i class="bi bi-car-front-fill"></i></div>
+                <h5 class="fw-bold mb-1 text-dark">{{ m.name }}</h5>
+                <small class="text-muted">{{ m.count }} car{% if m.count != 1 %}s{% endif %} · {{ m.models }} model{% if m.models != 1 %}s{% endif %}</small>
+                <div class="mt-3"><span class="btn btn-sm btn-outline-brand rounded-pill w-100">Browse {{ m.name }} <i class="bi bi-arrow-right"></i></span></div>
+              </div>
+            </div>
+          </a>
+        </div>
+      {% else %}
+        <div class="col-12 text-center text-muted py-5">No vehicles yet — check back soon.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .brand-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .brand-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: rgba(192,16,46,0.35) !important; }
+  .brand-icon {
+    width: 64px; height: 64px; border-radius: 18px;
+    background: var(--grad-deep); color: #fff; font-size: 1.7rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 22px rgba(11,27,51,0.3);
+  }
+</style>
+
+{% endblock %}

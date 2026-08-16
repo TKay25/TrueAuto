@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Auction Grades Explained — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="page-hero py-5">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-kicker">Know before you buy</span>
+      <h1 class="fw-black text-white mb-2">Japanese Auction <span class="grad-text">Grades Explained</span></h1>
+      <p class="text-white-50 mx-auto mb-0" style="max-width: 640px;">
+        Every car we import comes with an official Japanese auction sheet. Here's how to read
+        the grades — so you always know exactly what you're buying. This is the transparency
+        that big export sites never give you.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4 mb-5">
+      {% set grades = [
+        ("5", "Showroom", "Near-new condition, no scratches or dents, like a brand-new car.", "#0E3B2E"),
+        ("4.5", "Excellent", "Very minor, almost invisible marks. Outstanding interior — our favourite sweet spot.", "#10B981"),
+        ("4", "Very good", "Light scratches or small dents, well-kept interior. A safe, smart buy.", "#0D9488"),
+        ("3.5", "Good", "Some scratches/dents, possibly a minor repair. Mechanically sound — great value.", "#F2B705"),
+        ("3", "Fair", "Noticeable dents/scratches, but still drives well. Budget pick.", "#FB923C"),
+        ("R", "Repaired", "Previously repaired damage (accident repair) — we flag these clearly.", "#E11D48"),
+        ("RA", "Repaired (major)", "Major accident repair history — we disclose this honestly and usually advise against.", "#C0102E"),
+      ] %}
+      {% for g, label, desc, color in grades %}
+        <div class="col-md-4 reveal">
+          <div class="card border shadow-sm h-100">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <span class="grade-pill" style="background: {{ color }};">{{ g }}</span>
+                <strong class="fs-5">{{ label }}</strong>
+              </div>
+              <p class="text-muted small mb-0">{{ desc }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-8">
+        <div class="card border shadow-sm">
+          <div class="card-body p-4 p-md-5">
+            <h4 class="fw-black mb-3"><i class="bi bi-file-earmark-text text-accent me-2"></i>How to read an auction sheet</h4>
+            <div class="vstack gap-3">
+              <div class="auction-line"><span class="badge status-badge status-verified">Grade</span><div><strong>Grade & condition rating</strong> — the overall score above.</div></div>
+              <div class="auction-line"><span class="badge status-badge status-pending">Score</span><div><strong>Detailed 0–10 ratings</strong> for exterior, interior, engine, transmission, electrics — like a MOT on each system.</div></div>
+              <div class="auction-line"><span class="badge status-badge status-shipping">Mileage</span><div><strong>Odometer reading</strong> (in km) — we check it against the documented history.</div></div>
+              <div class="auction-line"><span class="badge status-badge status-available">Specs</span><div><strong>Engine, transmission, drivetrain, colour</strong> and equipment (sunroof, navigation, etc.).</div></div>
+              <div class="auction-line"><span class="badge status-badge status-shipping">Inspector notes</span><div><strong>Scratches, dents, repairs</strong> noted by the inspector — the honest bits other sites skip.</div></div>
+            </div>
+            <p class="small text-muted mt-4 mb-0">
+              <i class="bi bi-shield-check text-success me-1"></i>We share the full auction sheet with you BEFORE you bid — and attach it to your order as evidence. If we ever see a grade we wouldn't recommend, we say so.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-5 reveal">
+      <a href="{{ url_for('routes.catalog') }}" class="btn btn-accent rounded-pill px-4">Browse graded cars <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grade-pill {
+    width: 56px; height: 56px; border-radius: 16px;
+    color: #fff; font-weight: 900; font-size: 1.25rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 18px rgba(6,13,26,0.2);
+    flex-shrink: 0;
+  }
+  .auction-line { display: flex; gap: 0.9rem; align-items: flex-start; }
+  .auction-line .badge { min-width: 84px; text-align: center; margin-top: 2px; }
+</style>
+
+{% endblock %}

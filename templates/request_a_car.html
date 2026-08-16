@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}Request a Car — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="page-hero py-5">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <span class="section-kicker">Source on demand</span>
+        <h1 class="fw-black text-white mb-3">Can't find it? <span class="grad-text">We'll source it from Japan.</span></h1>
+        <p class="text-white-50 mb-0" style="max-width: 600px;">
+          This is what sets us apart from BeForward and every other export site: if it's not in
+          our catalog, we'll find it for you at Japanese auctions — with the same auction sheets,
+          fixed commission and live tracking. Tell us what you want and we'll do the hunting.
+        </p>
+      </div>
+      <div class="col-lg-5 d-none d-lg-block">
+        <div class="hero-card p-4">
+          <div class="d-flex gap-3 align-items-start mb-3">
+            <div class="stat-icon" style="background: rgba(61,220,132,0.15); color: #3DDC84;"><i class="bi bi-search-heart"></i></div>
+            <div><strong class="text-white d-block">How it works</strong>
+              <span class="text-white-50 small">Tell us the car → we source auction options → you approve → we bid → track it home.</span></div>
+          </div>
+          <div class="d-flex gap-3 align-items-start">
+            <div class="stat-icon" style="background: rgba(224,56,91,0.15); color: #FB7185;"><i class="bi bi-shield-check"></i></div>
+            <div><strong class="text-white d-block">Same transparency promise</strong>
+              <span class="text-white-50 small">Auction sheets, itemised costs, one fixed commission, live tracking.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card border shadow-lg rounded-4">
+          <div class="card-body p-4 p-md-5">
+            <h4 class="fw-black mb-1">Request your car</h4>
+            <p class="text-muted small mb-4">Fill in as much as you know — our team will come back with auction options fast (on WhatsApp too).</p>
+            <form id="requestForm">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Your name *</label>
+                  <input type="text" id="rName" class="form-control" placeholder="e.g. Tendai Moyo" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Phone / WhatsApp *</label>
+                  <input type="text" id="rPhone" class="form-control" placeholder="+263 7x xxx xxxx" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Email (optional)</label>
+                  <input type="email" id="rEmail" class="form-control" placeholder="you@example.com">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Make</label>
+                  <input type="text" id="rMake" class="form-control" placeholder="e.g. Toyota">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Model</label>
+                  <input type="text" id="rModel" class="form-control" placeholder="e.g. Land Cruiser Prado">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Year from</label>
+                  <input type="number" id="rYearMin" class="form-control" placeholder="e.g. 2016">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Year to</label>
+                  <input type="number" id="rYearMax" class="form-control" placeholder="e.g. 2020">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Budget (USD)</label>
+                  <input type="number" id="rBudget" class="form-control" placeholder="e.g. 25000" min="0">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Fuel</label>
+                  <select id="rFuel" class="form-select">
+                    <option value="">Any</option><option>Petrol</option><option>Diesel</option><option>Hybrid</option><option>Electric</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Anything else we should know?</label>
+                  <textarea id="rNotes" class="form-control" rows="3" placeholder="Colour, transmission, 4WD, mileage target…"></textarea>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-accent btn-lg rounded-pill w-100"><i class="bi bi-send me-1"></i> Send my request</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-card .stat-icon { flex-shrink: 0; }
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById("requestForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  try {
+    await apiFetch("/api/requests", {
+      method: "POST",
+      body: {
+        name: document.getElementById("rName").value,
+        phone: document.getElementById("rPhone").value,
+        email: document.getElementById("rEmail").value,
+        make: document.getElementById("rMake").value,
+        model: document.getElementById("rModel").value,
+        year_min: document.getElementById("rYearMin").value,
+        year_max: document.getElementById("rYearMax").value,
+        budget_max_usd: document.getElementById("rBudget").value,
+        fuel: document.getElementById("rFuel").value,
+        notes: document.getElementById("rNotes").value,
+      },
+    });
+    document.getElementById("requestForm").reset();
+    showToast("Request received! We'll source auction options for you shortly. 🚗", "success");
+  } catch (err) {
+    showToast(err.message, "danger", "Could not send");
+  }
+});
+</script>
+{% endblock %}

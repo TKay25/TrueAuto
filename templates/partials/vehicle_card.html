@@ -1,0 +1,44 @@
+{% set est = estimate_for_vehicle(v) %}
+<div class="col">
+  <div class="card h-100 vehicle-card">
+    <a href="{{ url_for('routes.vehicle_detail', slug=v.slug) }}" class="text-decoration-none">
+      <div class="vehicle-img">
+        {% if v.photo_list() %}
+          <img src="{{ v.photo_list()[0] }}" alt="{{ v.full_title }}" loading="lazy">
+        {% else %}
+          <div class="vehicle-placeholder d-flex flex-column align-items-center justify-content-center">
+            <i class="bi bi-car-front-fill placeholder-car"></i>
+            <span class="placeholder-text">{{ v.make }} {{ v.model }}</span>
+          </div>
+        {% endif %}
+        <span class="badge position-absolute top-0 start-0 m-2 status-badge status-{{ v.status }}">
+          {{ v.status|capitalize }}
+        </span>
+        {% if v.auction_grade %}
+          <span class="badge position-absolute top-0 end-0 m-2 grade-badge">{{ v.auction_grade }} ★</span>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="card-title fw-bold mb-0">{{ v.year }} {{ v.make }} {{ v.model }}</h6>
+            <small class="text-muted">{{ v.transmission }} · {{ v.fuel }} · {{ v.mileage_km|num }} km</small>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-end mt-3">
+          <div>
+            <div class="text-muted small">Japan (FOB)</div>
+            <div class="fw-bold price">${{ v.fob_price_usd|money }}</div>
+          </div>
+          <div class="text-end">
+            <div class="text-muted small">Landed in Harare</div>
+            <div class="fw-bold text-accent-dark">${{ est.total|money }}</div>
+          </div>
+        </div>
+        <div class="d-grid mt-3">
+          <span class="btn btn-outline-brand btn-sm rounded-pill">View Details <i class="bi bi-arrow-right"></i></span>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Track Your Car — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="page-hero py-5">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-kicker">Live Tracking</span>
+      <h1 class="fw-black">Track Your Car, <span class="text-accent">Anywhere, Anytime</span></h1>
+      <p class="text-muted mx-auto" style="max-width: 620px;">
+        Enter your order number (e.g. <code>TA-2026-0001</code>) to see your vehicle's
+        live journey from Japanese auction to your driveway. No login needed — transparency for everyone.
+      </p>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+      <div class="col-lg-6">
+        <form class="d-flex gap-2" method="get" action="{{ url_for('routes.track') }}">
+          <div class="input-group input-group-lg">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-upc-scan text-muted"></i></span>
+            <input type="text" name="order" id="orderInput" class="form-control border-start-0"
+                   placeholder="TA-2026-0001" value="{{ order_number }}" autocomplete="off">
+          </div>
+          <button class="btn btn-accent rounded-pill px-4" type="submit"><i class="bi bi-search me-1"></i>Track</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pb-5">
+  <div class="container" id="trackResult" data-order="{{ order_number }}">
+    {% if order_number and not order %}
+      <div class="alert alert-warning text-center mx-auto" style="max-width: 560px;">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        We couldn't find order <strong>{{ order_number }}</strong>. Double-check the number on your
+        invoice — or <a href="{{ url_for('routes.contact') }}">contact us</a> for help.
+      </div>
+    {% elif order %}
+      <div id="trackLoading" class="text-center py-5">
+        <div class="spinner-border text-danger" role="status"></div>
+        <p class="text-muted mt-3 mb-0">Loading live tracking…</p>
+      </div>
+    {% else %}
+      <div class="text-center text-muted py-5">
+        <i class="bi bi-signpost-2 display-4"></i>
+        <p class="mt-3 mb-0">Enter an order number above to see live tracking.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/track.js') }}"></script>
+{% endblock %}

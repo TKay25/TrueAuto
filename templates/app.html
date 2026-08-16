@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>True Auto Zim — App</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    /* App shell — compact, distraction-free */
+    .app-topbar {
+      background: var(--grad-hero);
+      position: sticky; top: 0; z-index: 1050;
+      min-height: 60px;
+    }
+    .app-tabs {
+      position: sticky; top: 60px; z-index: 1040;
+      background: rgba(8, 17, 32, 0.97);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      overflow-x: auto;
+      display: flex;
+      gap: 0.25rem;
+      padding: 0.5rem 1rem;
+      -webkit-overflow-scrolling: touch;
+    }
+    .app-tab {
+      white-space: nowrap;
+      border: 1px solid transparent;
+      border-radius: 50rem;
+      padding: 0.4rem 1rem;
+      color: rgba(255, 255, 255, 0.75);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.15s ease;
+    }
+    .app-tab:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+    .app-tab.active { background: var(--grad-accent); color: #fff; box-shadow: 0 6px 16px rgba(192,16,46,0.35); }
+    .app-tab.admin-tab { color: #ffd166; }
+    .app-body { background: var(--grey-50); }
+    .app-view { animation: appFade 0.18s ease; }
+    @keyframes appFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    .user-chip {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50rem;
+      padding: 0.3rem 0.9rem;
+    }
+    .app-order-row { cursor: pointer; transition: all 0.15s ease; }
+    .app-order-row:hover { background: var(--grey-100) !important; transform: translateX(2px); }
+    @media (max-width: 576px) {
+      .app-tabs { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body class="app-body d-flex flex-column min-vh-100">
+
+  <!-- Top bar -->
+  <nav class="navbar navbar-dark app-topbar">
+    <div class="container-fluid px-3">
+      <a class="navbar-brand fw-black d-flex align-items-center gap-2" href="/">
+        <span class="brand-badge"><i class="bi bi-car-front-fill"></i></span>
+        <span>True Auto <span class="text-accent">Zim</span></span>
+        {% if portal == "admin" %}<span class="badge staff-pill ms-2"><i class="bi bi-shield-lock me-1"></i>Staff Portal</span>{% endif %}
+      </a>
+      <div class="d-flex align-items-center gap-2">
+        {% if portal == "admin" %}<a href="/" class="btn btn-sm btn-outline-light rounded-pill d-none d-md-inline-flex"><i class="bi bi-globe me-1"></i>View site</a>{% endif %}
+        <div id="appNotif"></div>
+        <div id="appUserChip"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- App shell: sidebar (desktop) / tab strip (mobile) + content -->
+  <div class="app-shell">
+    <aside class="app-sidebar" id="appNav" aria-label="App navigation"></aside>
+    <main class="app-main">
+      <div class="container-fluid py-4">
+        <div id="appView"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Chat widget + toasts -->
+  {% include "partials/chat_widget.html" %}
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/compare.js') }}"></script>
+  <script>window.PORTAL = {{ portal | tojson }};</script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+</html>

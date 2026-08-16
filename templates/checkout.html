@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Order {{ v.full_title }} — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="py-4">
+  <div class="container">
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-4">
+        <div class="card border shadow-sm">
+          <div class="vehicle-img rounded-top" style="height: 170px;">
+            <div class="vehicle-placeholder d-flex flex-column align-items-center justify-content-center">
+              <i class="bi bi-car-front-fill placeholder-car"></i>
+              <span class="placeholder-text">{{ v.make }} {{ v.model }}</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <h5 class="fw-bold mb-1">{{ v.full_title }}</h5>
+            <small class="text-muted">{{ v.transmission }} · {{ v.fuel }} · {{ v.mileage_km|num }} km</small>
+            <div class="d-flex justify-content-between mt-3 pt-3 border-top">
+              <span class="text-muted small">Landed estimate</span>
+              <strong class="text-accent-dark">${{ cost.total|money }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card border shadow-sm">
+          <div class="card-body p-4 p-md-5">
+            <span class="section-kicker">Order</span>
+            <h2 class="fw-black mb-2">Confirm your order</h2>
+            <p class="text-muted small mb-4">
+              We'll create your order, reserve the car and start bidding at Japanese auctions.
+              Deposit via EcoCash, InnBucks, OneMoney or bank transfer once your bid wins.
+            </p>
+
+            <form method="post" action="{{ url_for('routes.checkout', slug=v.slug) }}">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Deposit (USD)</label>
+                <input type="number" name="deposit" class="form-control" value="{{ (v.fob_price_usd * 0.2)|money }}" min="1" required>
+                <div class="form-text">Default is 20% of the Japan price ({{ (v.fob_price_usd * 0.2)|money }}).</div>
+              </div>
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Notes for our team (optional)</label>
+                <textarea name="notes" class="form-control" rows="3" placeholder="Colour preference, budget range, anything we should know…"></textarea>
+              </div>
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-accent btn-lg rounded-pill"><i class="bi bi-bag-check me-1"></i> Place order</button>
+                <a href="{{ url_for('routes.vehicle_detail', slug=v.slug) }}" class="btn btn-outline-brand rounded-pill">Cancel</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

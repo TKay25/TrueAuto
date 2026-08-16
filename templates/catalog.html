@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}Cars for Sale — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="page-hero py-5">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-kicker">Catalog</span>
+      <h1 class="fw-black mb-2">Cars For Sale <span class="grad-text">🇯🇵</span></h1>
+      <p class="text-white-50 mx-auto mb-0" style="max-width: 620px;">Live inventory from Japanese auctions. Prices shown: <strong class="text-white">Japan FOB</strong> and <strong class="text-white">landed in Harare</strong> — full breakdown on every car.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pb-5">
+  <div class="container" style="margin-top: -34px; position: relative; z-index: 3;">
+    <!-- Filter bar -->
+    <div class="card shadow-lg border-0 rounded-4">
+      <div class="card-body py-3">
+        <div class="row g-2 align-items-center">
+          <div class="col-12 col-md-4">
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+              <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Search make, model or year…">
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <select id="makeSelect" class="form-select">
+              <option value="">All makes</option>
+              {% for m in makes %}
+                <option value="{{ m }}">{{ m }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-6 col-md-3">
+            <select id="sortSelect" class="form-select">
+              <option value="newest">Newest first</option>
+              <option value="price_asc">Price (low → high)</option>
+              <option value="price_desc">Price (high → low)</option>
+              <option value="year_desc">Year (newest)</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-2 d-grid">
+            <button class="btn btn-brand rounded-pill" id="clearFilters"><i class="bi bi-x-circle me-1"></i>Reset</button>
+          </div>
+        </div>
+        <!-- Make chips -->
+        <div class="d-flex gap-1 flex-wrap mt-3 pt-2 border-top" id="makeChips">
+          <button class="btn btn-sm chip-filter active" data-make="">All</button>
+          {% for m in makes %}
+            <button class="btn btn-sm chip-filter" data-make="{{ m }}">{{ m }}</button>
+          {% endfor %}
+        </div>
+        <!-- Advanced filters (BeForward-style) -->
+        <div class="mt-2">
+          <button class="btn btn-sm btn-link p-0 fw-semibold text-accent-dark" type="button" data-bs-toggle="collapse" data-bs-target="#advFilters">
+            <i class="bi bi-funnel me-1"></i>Advanced filters
+          </button>
+          <div class="collapse mt-2" id="advFilters">
+            <div class="row g-2 align-items-end">
+              <div class="col-6 col-md-2"><label class="form-label small mb-1">Price min ($)</label><input type="number" id="fPriceMin" class="form-control form-control-sm" placeholder="0"></div>
+              <div class="col-6 col-md-2"><label class="form-label small mb-1">Price max ($)</label><input type="number" id="fPriceMax" class="form-control form-control-sm" placeholder="∞"></div>
+              <div class="col-6 col-md-2"><label class="form-label small mb-1">Year min</label><input type="number" id="fYearMin" class="form-control form-control-sm" placeholder="0"></div>
+              <div class="col-6 col-md-2"><label class="form-label small mb-1">Year max</label><input type="number" id="fYearMax" class="form-control form-control-sm" placeholder="∞"></div>
+              <div class="col-6 col-md-2"><label class="form-label small mb-1">Max mileage (km)</label><input type="number" id="fMileage" class="form-control form-control-sm" placeholder="∞"></div>
+              <div class="col-6 col-md-2"><label class="form-label small mb-1">Fuel</label>
+                <select id="fFuel" class="form-select form-select-sm"><option value="">Any</option><option>Petrol</option><option>Diesel</option><option>Hybrid</option></select>
+              </div>
+              <div class="col-6 col-md-2"><label class="form-label small mb-1">Transmission</label>
+                <select id="fTrans" class="form-select form-select-sm"><option value="">Any</option><option>Automatic</option><option>Manual</option></select>
+              </div>
+              <div class="col-6 col-md-2"><button class="btn btn-sm btn-outline-brand rounded-pill w-100" id="clearAdvanced">Clear</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="catalogLoading" class="text-center py-5 d-none">
+      <div class="spinner-border text-danger" role="status"></div>
+      <p class="text-muted mt-3 mb-0">Loading cars from Japan…</p>
+    </div>
+    <div id="catalogEmpty" class="text-center py-5 d-none">
+      <i class="bi bi-emoji-frown display-3 text-muted"></i>
+      <h5 class="fw-bold mt-3">No cars match your search</h5>
+      <p class="text-muted">Try a different filter — or tell our chatbot what you want and we'll source it.</p>
+      <button class="btn btn-accent rounded-pill" onclick="window.chatOpen()"><i class="bi bi-chat-dots me-1"></i>Request a car</button>
+    </div>
+    <div id="catalogGrid" class="row g-4 mt-0"></div>
+    <div id="catalogPagination" class="d-flex justify-content-center align-items-center gap-3 mt-4"></div>
+    <div id="catalogCount" class="text-center text-muted small mt-2"></div>
+  </div>
+</section>
+
+<style>
+  .chip-filter {
+    border: 1px solid var(--grey-200);
+    color: var(--grey-600);
+    background: #fff;
+    font-weight: 600;
+    border-radius: 50rem;
+    transition: all 0.14s ease;
+  }
+  .chip-filter:hover { border-color: var(--deep-blue-2); color: var(--deep-blue-2); }
+  .chip-filter.active {
+    background: var(--deep-blue-2);
+    border-color: var(--deep-blue-2);
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(11,27,51,0.25);
+  }
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+<script>window.SELECTED_MAKE = {{ selected_make | tojson }};</script>
+<script src="{{ url_for('static', filename='js/catalog.js') }}"></script>
+{% endblock %}

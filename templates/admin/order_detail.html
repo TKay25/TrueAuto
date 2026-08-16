@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Order {{ order.order_number }} — Admin{% endblock %}
+{% block content %}
+<section class="py-4">
+  <div class="container">
+    <div class="mb-3"><a href="{{ url_for('routes.admin_orders') }}" class="btn btn-sm btn-outline-brand rounded-pill"><i class="bi bi-arrow-left"></i> All orders</a></div>
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+      <div>
+        <h2 class="fw-black mb-0">#{{ order.order_number }}</h2>
+        <small class="text-muted">{{ order.customer.name }} · {{ order.customer.phone }} · {{ order.customer.email }}</small>
+      </div>
+      <div class="d-flex gap-2 align-items-center">
+        <a class="btn btn-outline-brand rounded-pill" href="{{ url_for('routes.invoice', order_id=order.id) }}" target="_blank"><i class="bi bi-receipt me-1"></i> Invoice</a>
+        <span class="badge status-badge status-shipping fs-6">{{ order.status|replace("_", " ")|title }}</span>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="card border shadow-sm mb-4">
+          <div class="card-body p-4">
+            <h6 class="fw-bold mb-2"><i class="bi bi-arrow-repeat text-accent me-1"></i>Advance stage</h6>
+            <select id="admStage" class="form-select mb-2">
+              {% for s in stages %}
+                <option value="{{ s.key }}" {% if s.key == order.status %}selected{% endif %}>{{ loop.index }}. {{ s.label }}</option>
+              {% endfor %}
+            </select>
+            <textarea id="admNote" class="form-control mb-2" rows="2" placeholder="Note shown to customer (e.g. vessel name, ETA)"></textarea>
+            <input type="text" id="admEvidence" class="form-control mb-2" placeholder="Evidence URL (optional — receipt/photo)">
+            <button class="btn btn-brand btn-sm rounded-pill w-100" onclick="advanceStage({{ order.id }})"><i class="bi bi-send me-1"></i> Post update</button>
+          </div>
+        </div>
+
+        <div class="card border shadow-sm">
+          <div class="card-body p-4">
+            <h6 class="fw-bold mb-3"><i class="bi bi-credit-card text-accent me-1"></i>Payments (${{ order.paid_total()|money }} of ${{ order.total_estimate_usd|money }})</h6>
+            <div class="vstack gap-2">
+              {% for p in order.payments %}
+                <div class="d-flex justify-content-between align-items-center border rounded-3 px-3 py-2 small">
+                  <div><strong>{{ p.method|replace("_", " ")|title }}</strong><div class="text-muted">{{ p.reference }}{% if p.note %} · {{ p.note }}{% endif %}</div></div>
+                  <div class="text-end">
+                    <div class="fw-bold">${{ p.amount_usd|money }}</div>
+                    {% if p.status == "verified" %}
+                      <span class="badge status-badge status-verified">verified</span>
+                    {% else %}
+                      <button class="btn btn-sm btn-success rounded-pill mt-1" onclick="verifyPayment({{ p.id }})">Verify</button>
+                    {% endif %}
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-muted small mb-0">No payments yet.</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card border shadow-sm mb-4">
+          <div class="card-body p-4">
+            <h6 class="fw-bold mb-3"><i class="bi bi-signpost-2 text-accent me-2"></i>Journey</h6>
+            {% for s in stages %}
+              {% set ev = order.events.filter_by(stage=s.key).first() %}
+              {% if ev %}
+                <div class="tracking-step {{ 'done' if loop.index0 < order.stage_index() else ('active' if loop.index0 == order.stage_index() else 'upcoming') }} mb-3">
+                  <div class="track-icon">{{ s.icon }}</div>
+                  <div class="w-100">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap">
+                      <span class="fw-semibold">{{ loop.index }}. {{ s.label }}</span>
+                      <small class="text-muted">{{ ev.created_at.strftime("%d %b %Y, %H:%M") if ev.created_at }}</small>
+                    </div>
+                    {% if ev.note %}<small class="text-muted d-block">{{ ev.note }}</small>{% endif %}
+                    {% if ev.evidence_url %}<a href="{{ ev.evidence_url }}" target="_blank" class="small text-accent">View evidence <i class="bi bi-box-arrow-up-right"></i></a>{% endif %}
+                  </div>
+                </div>
+              {% else %}
+                <div class="tracking-step upcoming mb-3"><div class="track-icon">{{ loop.index }}</div>
+                  <div class="w-100"><span class="text-muted">{{ loop.index }}. {{ s.label }}</span></div></div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function advanceStage(orderId) {
+  try {
+    await apiFetch(`/api/admin/orders/${orderId}/advance`, {
+      method: "POST",
+      body: {
+        stage: document.getElementById("admStage").value,
+        note: document.getElementById("admNote").value,
+        evidence_url: document.getElementById("admEvidence").value,
+      },
+    });
+    showToast("Stage updated. Customer's tracker is now live.", "success");
+    setTimeout(() => location.reload(), 900);
+  } catch (e) { showToast(e.message, "danger"); }
+}
+async function verifyPayment(paymentId) {
+  try {
+    await apiFetch(`/api/admin/payments/${paymentId}/verify`, { method: "POST" });
+    showToast("Payment verified.", "success");
+    setTimeout(() => location.reload(), 900);
+  } catch (e) { showToast(e.message, "danger"); }
+}
+</script>
+{% endblock %}

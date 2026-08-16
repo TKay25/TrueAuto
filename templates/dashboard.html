@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="py-4">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+      <div>
+        <span class="section-kicker">Dashboard</span>
+        <h1 class="fw-black mb-0">Hello, {{ current_user.name }} 👋</h1>
+      </div>
+      <a href="{{ url_for('routes.catalog') }}" class="btn btn-accent rounded-pill"><i class="bi bi-car-front me-1"></i> Find a car</a>
+    </div>
+
+    {% if orders %}
+      <div class="row g-4">
+        {% for o in orders %}
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border shadow-sm">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-bold">#{{ o.order_number }}</span>
+                  <span class="badge status-badge status-shipping">{{ o.status|replace("_", " ")|title }}</span>
+                </div>
+                <h6 class="fw-bold mb-1">{{ o.vehicle.full_title }}</h6>
+                <small class="text-muted d-block mb-3">Placed {{ o.created_at.strftime("%d %b %Y") if o.created_at }}</small>
+
+                <div class="progress mb-2" style="height: 8px;">
+                  <div class="progress-bar bg-success" style="width: {{ (o.stage_index() / 10 * 100)|round|int }}%"></div>
+                </div>
+                <small class="text-muted">Stage {{ o.stage_index() + 1 }} of 10</small>
+
+                <div class="d-flex justify-content-between mt-3 pt-3 border-top">
+                  <span class="text-muted small">Paid <strong>${{ o.paid_total()|money }}</strong></span>
+                  <span class="text-muted small">Total <strong>${{ o.total_estimate_usd|money }}</strong></span>
+                </div>
+
+                <div class="d-grid mt-3">
+                  <a href="{{ url_for('routes.order_detail', order_id=o.id) }}" class="btn btn-outline-brand btn-sm rounded-pill">
+                    Track & manage <i class="bi bi-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center py-5">
+        <i class="bi bi-car-front display-3 text-muted"></i>
+        <h5 class="fw-bold mt-3">You don't have any orders yet</h5>
+        <p class="text-muted">Browse the catalog and order your dream car — we'll import it with full transparency.</p>
+        <a href="{{ url_for('routes.catalog') }}" class="btn btn-accent rounded-pill mt-2">Browse cars <i class="bi bi-arrow-right"></i></a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

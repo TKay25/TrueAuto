@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Orders — Admin{% endblock %}
+{% block content %}
+<section class="py-4">
+  <div class="container">
+    <h2 class="fw-black mb-4">All Orders</h2>
+    <div class="card border shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead><tr><th>Order</th><th>Customer</th><th>Vehicle</th><th>Status</th><th>Paid / Total</th><th></th></tr></thead>
+          <tbody>
+            {% for o in orders %}
+            <tr class="app-order-row" onclick="location.href='{{ url_for('routes.admin_order_detail', order_id=o.id) }}'">
+              <td class="fw-semibold">#{{ o.order_number }}</td>
+              <td>{{ o.customer.name }}<br><small class="text-muted">{{ o.customer.phone }}</small></td>
+              <td>{{ o.vehicle.full_title }}</td>
+              <td><span class="badge status-badge status-shipping">{{ o.status|replace("_", " ")|title }}</span></td>
+              <td><strong>${{ o.paid_total()|money }}</strong> / ${{ o.total_estimate_usd|money }}</td>
+              <td><i class="bi bi-chevron-right text-muted"></i></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="text-center text-muted py-4">No orders yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

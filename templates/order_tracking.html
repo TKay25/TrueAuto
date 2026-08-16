@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Order {{ order.order_number }} — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="py-4">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="{{ url_for('routes.dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active">{{ order.order_number }}</li>
+      </ol>
+    </nav>
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+      <div>
+        <h2 class="fw-black mb-0">Order {{ order.order_number }}</h2>
+        <small class="text-muted">{{ order.vehicle.full_title }}</small>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="{{ url_for('routes.invoice', order_id=order.id) }}" class="btn btn-outline-brand rounded-pill">
+          <i class="bi bi-receipt me-1"></i> Invoice
+        </a>
+        <span class="badge status-badge status-shipping fs-6 align-self-center">{{ order.status|replace("_", " ")|title }}</span>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Timeline -->
+      <div class="col-lg-7">
+        <div class="card border shadow-sm mb-4">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-signpost-2 text-accent me-2"></i>Live journey</h5>
+            <div id="trackingTimeline">
+              {% for stage in stages %}
+                {% set ev = order.events.filter_by(stage=stage.key).first() %}
+                {% if ev %}
+                  <div class="tracking-step {{ 'done' if loop.index0 < order.stage_index() else ('active' if loop.index0 == order.stage_index() else 'upcoming') }} mb-3">
+                    <div class="track-icon">{{ stage.icon }}</div>
+                    <div class="w-100">
+                      <div class="d-flex justify-content-between align-items-start flex-wrap">
+                        <span class="fw-semibold">{{ loop.index }}. {{ stage.label }}</span>
+                        <small class="text-muted">{{ ev.created_at.strftime("%d %b %Y, %H:%M") if ev.created_at }}</small>
+                      </div>
+                      {% if ev.note %}<small class="text-muted d-block">{{ ev.note }}</small>{% endif %}
+                      {% if ev.evidence_url %}<a href="{{ ev.evidence_url }}" target="_blank" class="small text-accent">View evidence <i class="bi bi-box-arrow-up-right"></i></a>{% endif %}
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="tracking-step upcoming mb-3">
+                    <div class="track-icon">{{ loop.index }}</div>
+                    <div class="w-100"><span class="text-muted">{{ loop.index }}. {{ stage.label }}</span></div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <p class="small text-muted mt-2 mb-0"><i class="bi bi-arrow-repeat me-1"></i>Auto-refreshes every 30 seconds.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payments & costs -->
+      <div class="col-lg-5">
+        <!-- Cost summary -->
+        <div class="card border shadow-sm mb-4">
+          <div class="card-body p-4">
+            <h6 class="fw-bold mb-2"><i class="bi bi-receipt text-accent me-1"></i>Cost summary</h6>
+            <div class="cost-breakdown">
+              <div class="cost-row"><span>Japan FOB</span><span class="fw-semibold">${{ cost.fob|money }}</span></div>
+              <div class="cost-row"><span>Freight</span><span class="fw-semibold">${{ cost.freight|money }}</span></div>
+              <div class="cost-row"><span>Duty + surtax + VAT</span><span class="fw-semibold">${{ (cost.duty + cost.surtax + cost.vat)|money }}</span></div>
+              <div class="cost-row"><span>Clearing, port, transport</span><span class="fw-semibold">${{ (cost.port_handling + cost.clearing + cost.inspection + cost.transport)|money }}</span></div>
+              <div class="cost-row commission"><span>True Auto commission</span><span class="fw-bold">${{ cost.commission|money }}</span></div>
+              <div class="cost-row total"><span>Total</span><span class="text-accent-dark">${{ cost.total|money }}</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payments -->
+        <div class="card border shadow-sm">
+          <div class="card-body p-4">
+            <h6 class="fw-bold mb-3"><i class="bi bi-cash-coin text-accent me-1"></i>Payments</h6>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted small">Paid</span><strong class="text-success">${{ order.paid_total()|money }}</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <span class="text-muted small">Outstanding</span><strong class="text-accent-dark">${{ order.outstanding_total()|money }}</strong>
+            </div>
+
+            <div id="paymentsList" class="vstack gap-2 mb-3">
+              {% for p in order.payments %}
+                <div class="d-flex justify-content-between align-items-center border rounded-3 px-3 py-2 small">
+                  <div>
+                    <strong>{{ p.method|replace("_", " ")|title }}</strong>
+                    <div class="text-muted">{{ p.reference }}</div>
+                  </div>
+                  <div class="text-end">
+                    <div class="fw-bold">${{ p.amount_usd|money }}</div>
+                    <span class="badge status-badge {{ 'status-verified' if p.status == 'verified' else 'status-pending' }}">{{ p.status }}</span>
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-muted small mb-0">No payments yet.</p>
+              {% endfor %}
+            </div>
+
+            <h6 class="fw-bold mb-2">Submit a payment</h6>
+            <form id="paymentForm">
+              <div class="mb-2">
+                <select class="form-select form-select-sm" id="payMethod">
+                  {% for key, m in payment_methods.items() %}
+                    <option value="{{ key }}">{{ m.label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-2">
+                <input type="number" id="payAmount" class="form-control form-control-sm" placeholder="Amount (USD)" min="1" step="1" required>
+              </div>
+              <div class="mb-2">
+                <input type="text" id="payReference" class="form-control form-control-sm" placeholder="Transaction / deposit-slip reference" required>
+              </div>
+              <div class="small text-muted mb-2" id="payHint">Select a method for payment instructions.</div>
+              <button type="submit" class="btn btn-brand btn-sm rounded-pill w-100"><i class="bi bi-check2-circle me-1"></i> Submit for verification</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.PAYMENT_HINTS = {{ payment_methods | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/tracking.js') }}"></script>
+{% endblock %}

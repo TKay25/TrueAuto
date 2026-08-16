@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — True Auto Zim{% endblock %}
+{% block content %}
+
+<section class="py-4">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+      <div><span class="section-kicker">Admin</span><h1 class="fw-black mb-0">Overview</h1></div>
+      <div class="d-flex gap-2">
+        <a href="{{ url_for('routes.app') }}" class="btn btn-accent rounded-pill"><i class="bi bi-grid-1x2 me-1"></i> Open App (no reloads)</a>
+        <a href="{{ url_for('routes.admin_orders') }}" class="btn btn-outline-brand rounded-pill">Orders</a>
+        <a href="{{ url_for('routes.admin_vehicles') }}" class="btn btn-outline-brand rounded-pill">Vehicles</a>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      {% for label, val, icon, color in [
+        ("Total vehicles", stats.vehicles, "bi-car-front", "rgba(192,16,46,0.1)"),
+        ("Available", stats.available, "bi-check-circle", "rgba(10,46,30,0.1)"),
+        ("Reserved", stats.reserved, "bi-clock-history", "rgba(11,27,51,0.1)"),
+        ("Sold", stats.sold, "bi-trophy", "rgba(255,193,7,0.15)"),
+        ("Orders", stats.orders, "bi-bag", "rgba(192,16,46,0.1)"),
+        ("In transit", stats.in_transit, "bi-truck", "rgba(10,46,30,0.1)"),
+        ("Customers", stats.customers, "bi-people", "rgba(11,27,51,0.1)"),
+        ("Pending payments", stats.pending_payments, "bi-hourglass-split", "rgba(255,193,7,0.15)"),
+      ] %}
+      <div class="col-6 col-md-3">
+        <div class="stat-tile p-3">
+          <div class="stat-icon mb-2" style="background: {{ color }}; color: var(--crimson);"><i class="bi {{ icon }}"></i></div>
+          <div class="fw-black fs-4">{{ val }}</div>
+          <small class="text-muted">{{ label }}</small>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <div class="card border shadow-sm">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3"><i class="bi bi-bag me-2 text-accent"></i>Recent orders</h5>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead><tr><th>Order</th><th>Customer</th><th>Vehicle</th><th>Status</th></tr></thead>
+                <tbody>
+                  {% for o in recent_orders %}
+                  <tr class="app-order-row" onclick="location.href='{{ url_for('routes.admin_order_detail', order_id=o.id) }}'">
+                    <td class="fw-semibold">#{{ o.order_number }}</td>
+                    <td>{{ o.customer.name }}</td>
+                    <td>{{ o.vehicle.full_title }}</td>
+                    <td><span class="badge status-badge status-shipping">{{ o.status|replace("_", " ")|title }}</span></td>
+                  </tr>
+                  {% else %}
+                  <tr><td colspan="4" class="text-center text-muted py-4">No orders yet.</td></tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="card border shadow-sm">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3"><i class="bi bi-cash-coin me-2 text-accent"></i>Recent payments</h5>
+            {% for p in recent_payments %}
+              <div class="d-flex justify-content-between align-items-center border rounded-3 px-3 py-2 small mb-2">
+                <div>
+                  <strong>{{ p.method|replace("_", " ")|title }}</strong>
+                  <div class="text-muted">{{ p.reference }}</div>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold">${{ p.amount_usd|money }}</div>
+                  <span class="badge status-badge {{ 'status-verified' if p.status == 'verified' else 'status-pending' }}">{{ p.status }}</span>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted small mb-0">No payments yet.</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
